@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>vimbin - a pastebin with vim motion</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="static/css/lib/codemirror.css" />
+    <link rel="stylesheet" href="static/css/addon/dialog/dialog.css" />
+    <link rel="stylesheet" href="static/css/theme/catppuccin-colors.css" />
+    <link rel="stylesheet" href="static/css/theme/catppuccin.css" />
+    <link rel="stylesheet" href="static/css/vimbin.css" />
+
+    <script src="static/js/lib/codemirror.js"></script>
+    <script src="static/js/addon/dialog/dialog.js"></script>
+    <script src="static/js/addon/search/searchcursor.js"></script>
+    <script src="static/js/mode/clike/clike.js"></script>
+    <script src="static/js/addon/edit/matchbrackets.js"></script>
+    <script src="static/js/keymap/vim.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>{{.Title}}</h2>
+
+      <form>
+        <textarea id="code" name="code">{{.Content}}</textarea>
+      </form>
+
+      <footer>
+        <div class="vim-info-container">
+          <span id="vim-mode" class="vim-mode normal">NORMAL</span>
+          <span id="vim-command-line" class="custom-width nowrap"></span>
+        </div>
+        <script src="static/js/vimbin.js"></script>
+      </footer>
+    </div>
+  </body>
+</html>

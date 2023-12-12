@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vimbin
+  labels:
+    app: vimbin
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+  selector:
+    app: vimbin

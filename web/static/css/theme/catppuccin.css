@@ -1,0 +1,128 @@
+.cm-s-catppuccin.CodeMirror {
+  background-color: var(--ctp-frappe-base);
+  color: var(--catppuccino-latte-text);
+}
+
+.cm-s-catppuccin .CodeMirror-gutters {
+  background: var(--ctp-latte-text);
+  color: var(--ctp-latte-subtext0);
+  border: none;
+}
+
+.cm-s-catppuccin .CodeMirror-guttermarker,
+.cm-s-catppuccin .CodeMirror-guttermarker-subtle,
+.cm-s-catppuccin .CodeMirror-linenumber {
+  color: var(--ctp-latte-subtext0);
+}
+
+.cm-s-catppuccin .CodeMirror-cursor {
+  border-left: 1px solid var(--ctp-latte-text);
+}
+
+.cm-s-catppuccin div.CodeMirror-selected {
+  background: rgba(var(--ctp-latte-text-raw), 0.2);
+}
+
+.cm-s-catppuccin.CodeMirror-focused div.CodeMirror-selected {
+  background: rgba(var(--ctp-latte-text-raw), 0.2);
+}
+
+.cm-s-catppuccin .CodeMirror-line::selection,
+.cm-s-catppuccin .CodeMirror-line > span::selection,
+.cm-s-catppuccin .CodeMirror-line > span > span::selection {
+  background: rgba(var(--ctp-latte-sky-raw), 0.2);
+}
+
+.cm-s-catppuccin .CodeMirror-line::-moz-selection,
+.cm-s-catppuccin .CodeMirror-line > span::-moz-selection,
+.cm-s-catppuccin .CodeMirror-line > span > span::-moz-selection {
+  background: rgba(var(--ctp-latte-sky-raw), 0.2);
+}
+
+.cm-s-catppuccin .CodeMirror-activeline-background {
+  background: rgba(var(--ctp-latte-surface2-raw), 0.5);
+}
+
+.cm-s-catppuccin .cm-keyword {
+  color: var(--ctp-latte-rosewater);
+}
+
+.cm-s-catppuccin .cm-operator {
+  color: var(--ctp-frappe-blue);
+}
+
+.cm-s-catppuccin .cm-variable-2 {
+  color: var(--ctp-latte-text);
+}
+
+.cm-s-catppuccin .cm-variable-3,
+.cm-s-catppuccin .cm-type {
+  color: var(--ctp-macchiato-flamingo);
+}
+
+.cm-s-catppuccin .cm-builtin {
+  color: var(--ctp-mocha-peach);
+}
+
+.cm-s-catppuccin .cm-atom {
+  color: var(--ctp-latte-yellow);
+}
+
+.cm-s-catppuccin .cm-number {
+  color: var(--ctp-mocha-yellow);
+}
+
+.cm-s-catppuccin .cm-def {
+  color: var(--ctp-frappe-lavender);
+}
+
+.cm-s-catppuccin .cm-string {
+  color: var(--ctp-mocha-pink);
+}
+
+.cm-s-catppuccin .cm-string-2 {
+  color: var(--ctp-macchiato-flamingo);
+}
+
+.cm-s-catppuccin .cm-comment {
+  color: var(--ctp-latte-subtext1);
+}
+
+.cm-s-catppuccin .cm-variable {
+  color: var(--ctp-macchiato-flamingo);
+}
+
+.cm-s-catppuccin .cm-tag {
+  color: var(--ctp-mocha-yellow);
+}
+
+.cm-s-catppuccin .cm-meta {
+  color: var(--ctp-mocha-peach);
+}
+
+.cm-s-catppuccin .cm-attribute {
+  color: var(--ctp-latte-rosewater);
+}
+
+.cm-s-catppuccin .cm-property {
+  color: var(--ctp-latte-rosewater);
+}
+
+.cm-s-catppuccin .cm-qualifier {
+  color: var(--ctp-frappe-peach);
+}
+
+.cm-s-catppuccin .cm-variable-3,
+.cm-s-catppuccin .cm-type {
+  color: var(--ctp-frappe-peach);
+}
+
+.cm-s-catppuccin .cm-error {
+  color: rgba(255, 255, 255, 1);
+  background-color: var(--ctp-mocha-red);
+}
+
+.cm-s-catppuccin .CodeMirror-matchingbracket {
+  text-decoration: underline;
+  color: white !important;
+}
