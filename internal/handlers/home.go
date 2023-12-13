@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"html/template"
 	"net/http"
 	"vimbin/internal/config"
 	"vimbin/internal/server"
@@ -30,14 +29,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		Content: config.App.Storage.Content.Get(),
 	}
 
-	tmpl, err := template.New("index").Parse(string(config.App.HtmlTemplate))
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	err = tmpl.Execute(w, page)
-	if err != nil {
+	if err := config.App.HtmlTemplate.Execute(w, page); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

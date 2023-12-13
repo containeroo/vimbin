@@ -1,15 +1,18 @@
 package config
 
-import "sync"
+import (
+	"sync"
+	"text/template"
+)
 
 // App is the global configuration instance.
 var App Config
 
 // Config represents the application configuration.
 type Config struct {
-	HtmlTemplate []byte  `yaml:"-"`       // HtmlTemplate contains the HTML template content.
-	Server       Server  `yaml:"server"`  // Server represents the server configuration.
-	Storage      Storage `yaml:"storage"` // Storage represents the storage configuration.
+	HtmlTemplate *template.Template `yaml:"-"`       // HtmlTemplate contains the HTML template content.
+	Server       Server             `yaml:"server"`  // Server represents the server configuration.
+	Storage      Storage            `yaml:"storage"` // Storage represents the storage configuration.
 }
 
 // Web represents the web configuration.

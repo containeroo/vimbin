@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"text/template"
 	"vimbin/internal/config"
 	"vimbin/internal/handlers"
 	"vimbin/internal/server"
@@ -48,10 +49,11 @@ var serveCmd = &cobra.Command{
 		}
 
 		// Read the HTML template file
-		htmlTemplate, err := os.ReadFile("web/templates/index.html")
+		htmlTemplate, err := template.ParseFS(server.StaticFS, "web/templates/index.html")
 		if err != nil {
-			panic(err)
+			log.Fatal().Err(err)
 		}
+
 		config.App.HtmlTemplate = htmlTemplate
 
 		// Parse the configuration
