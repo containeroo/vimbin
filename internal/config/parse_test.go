@@ -52,6 +52,4 @@ func TestParse(t *testing.T) {
 	if cfg.Storage.Path != tempStoragePath {
 		t.Errorf("Storage path not set correctly. Expected: %s, Got: %s", tempStoragePath, cfg.Storage.Path)
 	}
-
-	// Add more assertions based on your specific requirements
 }

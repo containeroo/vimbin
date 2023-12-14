@@ -3,7 +3,9 @@ package config
 import (
 	"fmt"
 	"os"
+	"reflect"
 
+	"github.com/mitchellh/mapstructure"
 	"github.com/rs/zerolog/log"
 )
 
@@ -57,4 +59,38 @@ func checkStorageFile(filePath string) error {
 	defer f.Close()
 
 	return nil
+}
+
+// customTokenDecodeHook is a custom mapstructure DecodeHookFunc for decoding YAML data
+// into the Token struct. It converts the data into a string and initializes a Token with it.
+//
+// Parameters:
+//   - from: reflect.Type
+//     The type of the source data.
+//   - to: reflect.Type
+//     The type of the target data.
+//   - data: interface{}
+//     The data to be decoded.
+//
+// Returns:
+//   - interface{}
+//     The decoded data.
+//   - error
+//     An error, if any, encountered during the decoding process.
+func customTokenDecodeHook(from reflect.Type, to reflect.Type, data interface{}) (interface{}, error) {
+	// If the target type is not Token, return the data as is
+	if to != reflect.TypeOf(Token{}) {
+		return data, nil
+	}
+
+	var tokenValue string
+	// Decode the data into a string
+	if err := mapstructure.Decode(data, &tokenValue); err != nil {
+		return nil, fmt.Errorf("Unable to decode Token. %v", err)
+	}
+
+	// Initialize a Token with the decoded string
+	var token Token
+	token.Set(tokenValue)
+	return token, nil
 }

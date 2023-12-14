@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"time"
+	"vimbin/internal/config"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -28,7 +29,7 @@ import (
 )
 
 const (
-	version = "v0.0.4"
+	version = "v0.0.5"
 )
 
 var (
@@ -84,7 +85,7 @@ var rootCmd = &cobra.Command{
 			os.Exit(0)
 		} else {
 			// Display the root command's help message
-			cmd.Help()
+			_ = cmd.Help() // Make the linter happy
 		}
 	},
 }
@@ -127,8 +128,7 @@ func initConfig() {
 
 	viper.AutomaticEnv() // Read in environment variables that match
 
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
+	if err := config.App.Read(viper.ConfigFileUsed()); err != nil {
 		log.Fatal().Msgf("Error reading config file: %v", err)
 	}
 }

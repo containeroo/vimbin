@@ -63,7 +63,7 @@ var serveCmd = &cobra.Command{
 
 		// Collect handlers and start the server
 		handlers.Collect()
-		server.Run(config.App.Server.Web.Address)
+		server.Run(config.App.Server.Web.Address, config.App.Server.Api.Token.Get())
 	},
 }
 

@@ -8,7 +8,6 @@ import (
 	"strings"
 	"vimbin/internal/config"
 
-	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
@@ -23,16 +22,20 @@ func Collect() {}
 // filePermission represents the default file permission used in the application.
 const filePermission = 0644
 
-// LogRequest logs the details of an HTTP request.
+// generateHTTPRequestLogEntry generates a log entry for an HTTP request.
+//
+// This function takes an HTTP request as input and creates a formatted log entry
+// containing the request method, request URI, and sanitized query string. It removes
+// newlines, carriage returns, and replaces spaces in the query string to ensure a clean log entry.
 //
 // Parameters:
 //   - req: *http.Request
-//     The HTTP request to log.
-func LogRequest(req *http.Request) {
-	if log.Logger.GetLevel() != zerolog.TraceLevel {
-		return
-	}
-
+//     The HTTP request to generate a log entry for.
+//
+// Returns:
+//   - string
+//     A formatted log entry containing the request details.
+func generateHTTPRequestLogEntry(req *http.Request) string {
 	query := strings.Map(func(r rune) rune {
 		switch r {
 		case '\n', '\r': // Remove newlines and carriage returns from the query string
@@ -44,7 +47,7 @@ func LogRequest(req *http.Request) {
 		}
 	}, req.URL.RawQuery)
 
-	log.Trace().Msgf("%s %s%s", req.Method, req.RequestURI, query)
+	return fmt.Sprintf("%s %s%s", req.Method, req.RequestURI, query)
 }
 
 // handleContentRequest handles HTTP requests for updating content.
@@ -79,7 +82,7 @@ func handleContentRequest(
 	mergeContentFunc func(string, string) string,
 	saveContentFunc func(*config.Content, string),
 ) {
-	LogRequest(r)
+	log.Trace().Msg(generateHTTPRequestLogEntry(r))
 
 	// Parse JSON request body
 	var requestData map[string]string

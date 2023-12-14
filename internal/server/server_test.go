@@ -17,7 +17,7 @@ func TestRun(t *testing.T) {
 		testPort := "127.0.0.1:0"
 
 		// Run the server in a goroutine
-		go Run(testPort)
+		go Run(testPort, "token")
 
 		// Allow some time for the server to start
 		time.Sleep(500 * time.Millisecond)
@@ -45,36 +45,102 @@ func stopServerGracefully() {
 	}
 }
 
+func TestNotFoundHandler(t *testing.T) {
+	t.Run("Custom 404 handler returns a 404 response", func(t *testing.T) {
+		recorder := httptest.NewRecorder()
+		request := httptest.NewRequest("GET", "/nonexistent", nil)
+		notFoundHandler(recorder, request)
+
+		// Check if the response has a 404 status code
+		assert.Equal(t, http.StatusNotFound, recorder.Code)
+
+		// Check if the response body contains the expected content
+		expectedContent := "<h1>404 Not Found</h1>"
+		assert.Contains(t, recorder.Body.String(), expectedContent)
+	})
+}
+
 func TestNewRouter(t *testing.T) {
-	t.Run("Router configuration", func(t *testing.T) {
-		// Set up a router
-		Handlers = []Handler{
-			{
-				Path:        "/example",
-				Description: "Example handler description",
-				Handler: func(r http.ResponseWriter, w *http.Request) {
-					r.Write([]byte("Test file content"))
-					r.Header().Set("Content-Type", "text/plain")
-					r.WriteHeader(http.StatusOK)
-				},
-				Methods: []string{"GET"},
-			},
-		}
+	// Mock handler for testing
+	mockHandler := func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}
 
-		router := newRouter()
+	// Mock handlers for testing
+	Handlers = []Handler{
+		{
+			Path:        "/mock",
+			Handler:     mockHandler,
+			Methods:     []string{"GET"},
+			NeedsToken:  false,
+			Description: "Mock handler without token",
+		},
+		{
+			Path:        "/mock-with-token",
+			Handler:     mockHandler,
+			Methods:     []string{"GET"},
+			NeedsToken:  true,
+			Description: "Mock handler with token",
+		},
+	}
 
-		// Create a test request
-		req := httptest.NewRequest("GET", "/example", nil)
-		w := httptest.NewRecorder()
+	// Set up the router
+	router := newRouter("mock-token")
 
-		// Serve the request using the router
-		router.ServeHTTP(w, req)
+	// Test handler without token
+	t.Run("Handler without token", func(t *testing.T) {
+		request := httptest.NewRequest("GET", "/mock", nil)
+		responseRecorder := httptest.NewRecorder()
 
-		// Check if the request is handled correctly
-		assert.Equal(t, http.StatusOK, w.Code)
-		assert.Contains(t, w.Body.String(), "Test file content")
+		router.ServeHTTP(responseRecorder, request)
 
-		// Cleanup: clear the Handlers slice
-		Handlers = nil
+		// Check the status code of the response
+		assert.Equal(t, http.StatusOK, responseRecorder.Code)
+	})
+
+	// Test handler with valid token
+	t.Run("Handler with valid token", func(t *testing.T) {
+		request := httptest.NewRequest("GET", "/mock-with-token", nil)
+		request.Header.Set("X-API-Token", "mock-token")
+		responseRecorder := httptest.NewRecorder()
+
+		router.ServeHTTP(responseRecorder, request)
+
+		// Check the status code of the response
+		assert.Equal(t, http.StatusOK, responseRecorder.Code)
+	})
+
+	// Test handler with invalid token
+	t.Run("Handler with invalid token", func(t *testing.T) {
+		request := httptest.NewRequest("GET", "/mock-with-token", nil)
+		request.Header.Set("X-API-Token", "invalid-token")
+		responseRecorder := httptest.NewRecorder()
+
+		router.ServeHTTP(responseRecorder, request)
+
+		// Check the status code of the response
+		assert.Equal(t, http.StatusUnauthorized, responseRecorder.Code)
+	})
+
+	// Test static file serving
+	t.Run("Static file serving", func(t *testing.T) {
+		request := httptest.NewRequest("GET", "/static/css/vimbin.css", nil)
+		responseRecorder := httptest.NewRecorder()
+
+		router.ServeHTTP(responseRecorder, request)
+
+		// Check the status code of the response
+		assert.Equal(t, http.StatusOK, responseRecorder.Code)
+	})
+
+	// Test 404 handler
+	t.Run("404 handler", func(t *testing.T) {
+		request := httptest.NewRequest("GET", "/non-existent", nil)
+		responseRecorder := httptest.NewRecorder()
+
+		router.ServeHTTP(responseRecorder, request)
+
+		// Check the status code of the response
+		assert.Equal(t, http.StatusNotFound, responseRecorder.Code)
 	})
 }

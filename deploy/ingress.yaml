@@ -16,4 +16,4 @@ spec:
               service:
                 name: vimbin
                 port:
-                  name: vimbin
+                  name: http

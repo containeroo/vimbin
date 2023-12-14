@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	server.Register("/save", Save, "Save content to storage file", "POST")
+	server.Register("/save", "Save content to storage file", true, Save, "POST")
 }
 
 // Save handles HTTP requests for saving content to a file.

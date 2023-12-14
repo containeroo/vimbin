@@ -27,8 +27,12 @@ func (c *Config) Read(configPath string) error {
 		return fmt.Errorf("Failed to read config file: %v", err)
 	}
 
-	// Unmarshal the config into the Config struct
-	if err := viper.Unmarshal(c, func(d *mapstructure.DecoderConfig) { d.ZeroFields = true }); err != nil {
+	if err := viper.Unmarshal(c, func(d *mapstructure.DecoderConfig) {
+		d.ZeroFields = true // Zero out any existing fields
+		d.DecodeHook = mapstructure.ComposeDecodeHookFunc(
+			customTokenDecodeHook, // Custom decoder hook for the Token field
+		)
+	}); err != nil {
 		return fmt.Errorf("Failed to unmarshal config file: %v", err)
 	}
 

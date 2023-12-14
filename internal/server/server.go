@@ -21,7 +21,7 @@ var StaticFS embed.FS
 // Parameters:
 //   - listenAddress: string
 //     The address on which the server should listen (e.g., ":8080").
-func Run(listenAddress string) {
+func Run(listenAddress string, token string) {
 	// Use a buffered channel for runChan to prevent signal drops
 	runChan := make(chan os.Signal, 1)
 	signal.Notify(runChan, os.Interrupt, syscall.SIGTERM)
@@ -31,7 +31,7 @@ func Run(listenAddress string) {
 	defer cancel()
 
 	// Create the router and configure routes
-	router := newRouter()
+	router := newRouter(token)
 
 	// Create the HTTP server
 	server := &http.Server{
@@ -72,7 +72,7 @@ func Run(listenAddress string) {
 // Returns:
 //   - *mux.Router
 //     A configured instance of the Gorilla Mux router.
-func newRouter() *mux.Router {
+func newRouter(token string) *mux.Router {
 	router := mux.NewRouter()
 
 	// Handler for embed static files
@@ -84,7 +84,12 @@ func newRouter() *mux.Router {
 
 	// Add the handlers to the router
 	for _, h := range Handlers {
+		if h.NeedsToken {
+			router.Handle(h.Path, ApiTokenMiddleware(h.Handler, token)).Methods(h.Methods...)
+			continue
+		}
 		router.HandleFunc(h.Path, h.Handler).Methods(h.Methods...)
+
 	}
 
 	// Custom 404 handler

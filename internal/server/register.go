@@ -5,8 +5,9 @@ import "net/http"
 // Handler is a struct that contains a route and a handler function.
 type Handler struct {
 	Path        string                                   // Path is the URL route for the handler.
-	Handler     func(http.ResponseWriter, *http.Request) // Handler is the function that handles HTTP requests for the route.
 	Description string                                   // Description provides a brief explanation of the handler's purpose.
+	Handler     func(http.ResponseWriter, *http.Request) // Handler is the function that handles HTTP requests for the route.
+	NeedsToken  bool                                     // NeedsToken indicates if the handler requires a valid API token.
 	Methods     []string                                 // Methods is a list of HTTP methods supported by the handler.
 }
 
@@ -26,14 +27,17 @@ var Handlers = []Handler{}
 //     The function that handles HTTP requests for the route.
 //   - description: string
 //     A brief explanation of the handler's purpose.
+//   - needsToken: bool
+//     Indicates if the handler requires a valid API token.
 //   - methods: ...string
 //     Optional list of HTTP methods supported by the handler.
-func Register(path string, h func(http.ResponseWriter, *http.Request), description string, methods ...string) {
+func Register(path, description string, needsToken bool, handler func(http.ResponseWriter, *http.Request), methods ...string) {
 	Handlers = append(Handlers,
 		Handler{
 			Path:        path,
 			Description: description,
-			Handler:     h,
+			Handler:     handler,
+			NeedsToken:  needsToken,
 			Methods:     methods,
 		})
 }

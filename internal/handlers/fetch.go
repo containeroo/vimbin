@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	server.Register("/fetch", Fetch, "Fetch content from storage file", "GET")
+	server.Register("/fetch", "Fetch content from storage file", true, Fetch, "GET")
 }
 
 // Fetch handles HTTP requests for fetching content.
@@ -25,7 +25,7 @@ func init() {
 //   - r: *http.Request
 //     The HTTP request being processed.
 func Fetch(w http.ResponseWriter, r *http.Request) {
-	LogRequest(r)
+	log.Trace().Msg(generateHTTPRequestLogEntry(r))
 
 	w.Header().Set("Content-Type", "application/text")
 

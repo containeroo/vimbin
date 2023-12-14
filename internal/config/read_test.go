@@ -68,6 +68,6 @@ server:
 		cfg := &Config{}
 		err = cfg.Read(filePath.Name())
 		assert.Error(t, err) // We expect an error because the file has incorrect content
-		assert.Contains(t, err.Error(), "Failed to unmarshal config file: 1 error(s) decoding:\n\n* cannot parse 'Server.Api.SkipInsecureVerify' as bool: strconv.ParseBool: parsing \"not_a_boolean\": invalid syntax")
+		assert.EqualError(t, err, "Failed to unmarshal config file: 1 error(s) decoding:\n\n* cannot parse 'server.api.skipInsecureVerify' as bool: strconv.ParseBool: parsing \"not_a_boolean\": invalid syntax")
 	})
 }

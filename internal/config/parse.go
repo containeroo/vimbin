@@ -5,6 +5,8 @@ import (
 	"os"
 	"path"
 	"vimbin/internal/utils"
+
+	"github.com/rs/zerolog/log"
 )
 
 // Parse reads and processes the configuration settings.
@@ -46,6 +48,14 @@ func (c *Config) Parse() (err error) {
 	// Check if Hostname and Port are valid
 	if _, _, err := utils.ExtractHostAndPort(c.Server.Web.Address); err != nil {
 		return fmt.Errorf("Unable to extract hostname and port: %s", err)
+	}
+
+	// Check if the API token is valid
+	if c.Server.Api.Token.Get() == "" {
+		if err := c.Server.Api.Token.Generate(32); err != nil {
+			return fmt.Errorf("Unable to generate API token: %s", err)
+		}
+		log.Debug().Msgf("Generated API token: %s", c.Server.Api.Token.Get())
 	}
 
 	return nil

@@ -4,10 +4,12 @@ import (
 	"net/http"
 	"vimbin/internal/config"
 	"vimbin/internal/server"
+
+	"github.com/rs/zerolog/log"
 )
 
 func init() {
-	server.Register("/", Home, "Home site with editor", "GET")
+	server.Register("/", "Home site with editor", false, Home, "GET")
 }
 
 // Home handles HTTP requests for the home page.
@@ -22,11 +24,12 @@ func init() {
 //   - r: *http.Request
 //     The HTTP request being processed.
 func Home(w http.ResponseWriter, r *http.Request) {
-	LogRequest(r)
+	log.Trace().Msg(generateHTTPRequestLogEntry(r))
 
 	page := Page{
 		Title:   "vimbin - a pastebin with vim motion",
 		Content: config.App.Storage.Content.Get(),
+		Token:   config.App.Server.Api.Token.Get(),
 	}
 
 	if err := config.App.HtmlTemplate.Execute(w, page); err != nil {

@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	server.Register("/append", Append, "Append content to storage file", "POST")
+	server.Register("/append", "Append content to storage file", true, Append, "POST")
 }
 
 // Append handles HTTP requests for appending content to a file.

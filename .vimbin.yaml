@@ -1,0 +1,4 @@
+server:
+  api:
+    address: http://localhost:8080
+    token: mytoken

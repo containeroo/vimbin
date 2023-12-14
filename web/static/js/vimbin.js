@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-API-Token": apiToken,
         },
         body: JSON.stringify({ content: editor.getValue() }),
       });

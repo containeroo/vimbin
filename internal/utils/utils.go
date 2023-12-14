@@ -1,7 +1,10 @@
 package utils
 
 import (
+	"crypto/rand"
 	"crypto/tls"
+	"encoding/base64"
+	"fmt"
 	"net"
 	"net/http"
 	"strconv"
@@ -79,4 +82,38 @@ func CreateHTTPClient(insecureSkipVerify bool) *http.Client {
 	}
 
 	return httpClient
+}
+
+// GenerateRandomToken generates a random token of the specified length.
+//
+// Parameters:
+//   - length: int
+//     The desired length of the generated token.
+//
+// Returns:
+//   - string
+//     A random token of the specified length.
+//   - error
+//     An error if the random token generation fails.
+func GenerateRandomToken(length int) (string, error) {
+	if length <= 0 {
+		return "", fmt.Errorf("Invalid token length '%d'. Must be at minimum 1", length)
+	}
+	// Calculate the number of bytes needed to create the token
+	numBytes := (length * 3) / 4
+
+	// Generate random bytes
+	randomBytes := make([]byte, numBytes)
+	_, err := rand.Read(randomBytes)
+	if err != nil {
+		return "", err
+	}
+
+	// Encode random bytes to base64 to create the token
+	token := base64.URLEncoding.EncodeToString(randomBytes)
+
+	// Trim the padding '=' characters
+	token = token[:length]
+
+	return token, nil
 }
