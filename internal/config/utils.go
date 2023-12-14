@@ -40,8 +40,7 @@ return (--n >= 0) ? (unsigned char) *bufp++ : EOF;
 //     An error if unable to check or create the storage file.
 func checkStorageFile(filePath string) error {
 	// Open the file to check if it exists
-	_, err := os.Stat(filePath)
-	if err != nil {
+	if _, err := os.Stat(filePath); err != nil {
 		// If the file doesn't exist, create it with default content
 		log.Debug().Msg("Storage file not found; creating it with default content")
 		example := []byte(defaultExample)

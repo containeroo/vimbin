@@ -50,6 +50,11 @@ func (c *Config) Parse() (err error) {
 		return fmt.Errorf("Unable to extract hostname and port: %s", err)
 	}
 
+	// Check if the API token was set as ENV variable
+	if token := os.Getenv("VIMBIN_TOKEN"); token != "" {
+		c.Server.Api.Token.Set(token)
+	}
+
 	// Check if the API token is valid
 	if c.Server.Api.Token.Get() == "" {
 		if err := c.Server.Api.Token.Generate(32); err != nil {

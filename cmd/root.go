@@ -75,6 +75,9 @@ var rootCmd = &cobra.Command{
 			zerolog.SetGlobalLevel(zerolog.TraceLevel)
 			log.Debug().Msgf("Trace output enabled")
 		}
+		if token := cmd.Flag("token").Value.String(); token != "" {
+			config.App.Server.Api.Token.Set(token)
+		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		// Run is executed if no subcommand is specified.
@@ -104,6 +107,7 @@ func init() {
 	// Define command-line flags for the root command
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "Path to the configuration file (Default: $HOME/.vimbin.yaml).")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "", false, "Activates debug output for detailed logging.")
+	rootCmd.PersistentFlags().StringP("token", "t", "", "Token to use for authentication. If not set, a random token will be generated.")
 	rootCmd.PersistentFlags().BoolVarP(&trace, "trace", "", false, "Enables trace mode. This will show the content in the logs!")
 	rootCmd.MarkFlagsMutuallyExclusive("debug", "trace") // Ensure that debug and trace flags are mutually exclusive
 
@@ -113,6 +117,11 @@ func init() {
 // initConfig reads the configuration from the specified file or environment variables.
 func initConfig() {
 	if cfgFile != "" {
+		// Check if the specified config file exists
+		if _, err := os.Stat(cfgFile); err != nil {
+			log.Fatal().Msg("Config file '%s' not found")
+		}
+
 		// Use the config file specified by the flag.
 		viper.SetConfigFile(cfgFile)
 	} else {

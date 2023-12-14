@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/mitchellh/mapstructure"
+
 	"github.com/spf13/viper"
 )
 
@@ -23,8 +24,8 @@ func (c *Config) Read(configPath string) error {
 	viper.SetConfigFile(configPath)
 
 	// Read the config file
-	if err := viper.ReadInConfig(); err != nil {
-		return fmt.Errorf("Failed to read config file: %v", err)
+	if err := viper.ReadInConfig(); err == nil {
+		return nil
 	}
 
 	if err := viper.Unmarshal(c, func(d *mapstructure.DecoderConfig) {

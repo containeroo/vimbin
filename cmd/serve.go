@@ -74,7 +74,7 @@ func init() {
 	// Define command-line flags for the serve command
 	serveCmd.PersistentFlags().StringVarP(&config.App.Server.Web.Address, "listen-address", "a", ":8080", "The address to listen on for HTTP requests.")
 
-	serveCmd.PersistentFlags().StringVarP(&config.App.Server.Web.Theme, "theme", "t", "auto", fmt.Sprintf("The theme to use. Can be %s.", strings.Join(supportedThemes, "|")))
+	serveCmd.PersistentFlags().StringVarP(&config.App.Server.Web.Theme, "theme", "", "auto", fmt.Sprintf("The theme to use. Can be %s.", strings.Join(supportedThemes, "|")))
 	serveCmd.RegisterFlagCompletionFunc("theme", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		return supportedThemes, cobra.ShellCompDirectiveDefault
 	})
