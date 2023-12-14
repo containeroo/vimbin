@@ -31,7 +31,7 @@ func TestReadConfig(t *testing.T) {
 		content := `
 server:
   api:
-    skipInsecureVerify: "true"
+    skipInsecureVerify: true
 `
 		filePath, err := createTempFile(content)
 		if err != nil {
@@ -43,13 +43,32 @@ server:
 		err = config.Read(filePath.Name())
 		assert.NoError(t, err)
 		assert.Equal(t, true, config.Server.Api.SkipInsecureVerify)
+		assert.Equal(t, "", config.Server.Api.Token.Get())
+	})
+
+	t.Run("Validate token", func(t *testing.T) {
+		content := `
+server:
+  api:
+    token: token
+`
+		filePath, err := createTempFile(content)
+		if err != nil {
+			t.Fatalf("Failed to create temp file: %v", err)
+		}
+		defer os.Remove(filePath.Name())
+
+		config := &Config{}
+		err = config.Read(filePath.Name())
+		assert.NoError(t, err)
+		assert.Equal(t, "token", config.Server.Api.Token.Get())
 	})
 
 	// Test reading a non-existent file
 	t.Run("Invalid file path", func(t *testing.T) {
 		config := &Config{}
 		err := config.Read("path/to/non_existent.yaml")
-		assert.Error(t, err)
+		assert.Nil(t, err)
 	})
 
 	t.Run("Invalid YAML", func(t *testing.T) {

@@ -91,5 +91,6 @@ func customTokenDecodeHook(from reflect.Type, to reflect.Type, data interface{})
 	// Initialize a Token with the decoded string
 	var token Token
 	token.Set(tokenValue)
+
 	return token, nil
 }
