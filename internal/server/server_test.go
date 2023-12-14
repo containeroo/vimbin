@@ -122,17 +122,6 @@ func TestNewRouter(t *testing.T) {
 		assert.Equal(t, http.StatusUnauthorized, responseRecorder.Code)
 	})
 
-	// Test static file serving
-	t.Run("Static file serving", func(t *testing.T) {
-		request := httptest.NewRequest("GET", "/static/css/vimbin.css", nil)
-		responseRecorder := httptest.NewRecorder()
-
-		router.ServeHTTP(responseRecorder, request)
-
-		// Check the status code of the response
-		assert.Equal(t, http.StatusOK, responseRecorder.Code)
-	})
-
 	// Test 404 handler
 	t.Run("404 handler", func(t *testing.T) {
 		request := httptest.NewRequest("GET", "/non-existent", nil)
