@@ -76,7 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   editor.on("cursorActivity", showRelativeLines);
-
   editor.focus();
 
   var vimMode = document.getElementById("vim-mode");
