@@ -10,12 +10,6 @@ body {
   color: var(--ctp-latte-overlay0);
 }
 
-.button {
-  background-color: var(--ctp-latte-peach);
-  color: var(--ctp-latte-overlay2);
-  border: 2px solid var(--ctp-latte-surface2);
-}
-
 .container {
   margin: 20px;
   position: relative;
@@ -44,40 +38,57 @@ footer {
   font-size: 12px;
   padding: 5px;
   margin-right: 5px;
-  width: 130px;
-}
-
-.custom-width {
-  width: 200px;
-  display: inline-block;
-}
-
-.nowrap {
+  width: 54px;
   white-space: nowrap;
 }
 
 /* Style for the vim mode */
 .normal {
-  background-color: #16a34a;
+  background-color: #40a02b;
   color: white;
 }
 
 .insert {
-  background-color: #0284c7;
+  background-color: #1e66f5;
   color: white;
 }
 
 .visual {
-  background-color: #fb923c;
+  background-color: #fe640b;
   color: white;
 }
 
 .visual-line {
-  background-color: #a855f7;
+  background-color: #8839ef;
   color: white;
 }
 
 .unknown {
-  background-color: #e11d48;
+  background-color: #dd7878;
   color: white;
+}
+
+/* Status container */
+#status-container {
+  width: 200px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+#status {
+  font-size: 12px;
+  padding: 5px;
+  margin-right: 5px;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.isError {
+  background-color: #e78284;
+  color: #ffffff;
+}
+
+.noChanges {
+  background-color: #e5c890;
+  color: #ffffff;
 }

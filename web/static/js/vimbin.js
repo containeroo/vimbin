@@ -56,19 +56,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to show relative line numbers
   function showRelativeLines(cm) {
-    const lineNum = cm.getCursor().line + 1;
+    const lineNum = cm.getCursor().line + 1; // Get the current line number of the cursor
+
+    // If the current line number is the same as the stored line number, no need to update
     if (cm.state.curLineNum === lineNum) {
       return;
     }
-    cm.state.curLineNum = lineNum;
+
+    cm.state.curLineNum = lineNum; // Update the stored line number
+
+    // Set the line number formatter to display relative line numbers
     cm.setOption("lineNumberFormatter", (l) =>
+      // If the line number is the same as the current line, display the absolute line number
       l === lineNum ? lineNum : Math.abs(lineNum - l),
     );
   }
 
   // Function to save the content
   async function saveContent() {
+    const statusElement = document.getElementById("status");
+    clearTimeout(statusElement.timerId); // Clear the existing timer before setting a new one
+
     let status = "No changes were made.";
+    let isError = false;
+    let noChanges = true;
+    let startTimer = true;
 
     try {
       const response = await fetch("/save", {
@@ -81,10 +93,9 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (!response.ok) {
-        throw new Error("Save failed. Reason: " + response.statusText);
+        throw new Error(`Save failed. Reason: ${response.statusText}`);
       }
 
-      // Check if the response has a valid JSON body
       const isJson = response.headers
         .get("content-type")
         ?.includes("application/json");
@@ -96,14 +107,36 @@ document.addEventListener("DOMContentLoaded", function () {
       const changesResponse = await response.json();
 
       if (changesResponse.status !== "no changes") {
-        // Retrieve the number of bytes written from the response headers
         const bytesWritten = response.headers.get("X-Bytes-Written");
         status = `${bytesWritten}B written`;
+        noChanges = false;
       }
     } catch (error) {
-      status = "Error saving: " + error.message;
+      startTimer = false;
+      isError = true;
+      status = `ERROR: ${error.message}`;
     }
-    document.getElementById("status").innerText = status;
+
+    statusElement.innerText = status;
+    statusElement.classList.remove("isError", "noChanges"); // Remove all classes
+
+    if (isError) {
+      statusElement.classList.add("isError");
+    }
+
+    if (noChanges) {
+      statusElement.classList.add("noChanges");
+    }
+
+    if (startTimer) {
+      const delay = 5000;
+
+      // Set a new timer
+      statusElement.timerId = setTimeout(() => {
+        statusElement.innerText = "";
+        statusElement.classList.remove("isError", "noChanges");
+      }, delay);
+    }
   }
 
   var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
