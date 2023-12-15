@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
         vimModeElement.classList.add("unknown");
     }
   }
+
   // Function to show relative line numbers
   function showRelativeLines(cm) {
     const lineNum = cm.getCursor().line + 1;
@@ -65,25 +66,8 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
-  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-    lineNumbers: true,
-    mode: "text/x-csrc",
-    keyMap: "vim",
-    matchBrackets: true,
-    showCursorWhenSelecting: true,
-    theme: getPreferredTheme(),
-    lineWrapping: true, // Optional: enable line wrapping if desired
-  });
-
-  editor.on("cursorActivity", showRelativeLines);
-  editor.focus();
-
-  var vimMode = document.getElementById("vim-mode");
-  CodeMirror.on(editor, "vim-mode-change", function (e) {
-    updateVimMode(e, vimMode);
-  });
-
-  CodeMirror.commands.save = async function () {
+  // Function to save the content
+  async function saveContent() {
     let status = "No changes were made.";
 
     try {
@@ -120,7 +104,32 @@ document.addEventListener("DOMContentLoaded", function () {
       status = "Error saving: " + error.message;
     }
     document.getElementById("status").innerText = status;
-  };
+  }
+
+  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    lineNumbers: true,
+    mode: "text/x-csrc",
+    keyMap: "vim",
+    matchBrackets: true,
+    showCursorWhenSelecting: true,
+    theme: getPreferredTheme(),
+    lineWrapping: true, // Optional: enable line wrapping if desired
+  });
+
+  editor.on("cursorActivity", showRelativeLines);
+  editor.focus();
+
+  // Custom vim Ex commands
+  CodeMirror.Vim.defineEx("x", "", function () {
+    saveContent();
+  });
+
+  var vimMode = document.getElementById("vim-mode");
+  CodeMirror.on(editor, "vim-mode-change", function (e) {
+    updateVimMode(e, vimMode);
+  });
+
+  CodeMirror.commands.save = saveContent;
 
   // Listen for changes in the prefers-color-scheme media query
   window.matchMedia("(prefers-color-scheme: dark)").addListener((e) => {
