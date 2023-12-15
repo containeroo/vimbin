@@ -29,7 +29,7 @@ import (
 )
 
 const (
-	version = "v0.0.6"
+	version = "v0.0.7"
 )
 
 var (
@@ -105,7 +105,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	// Define command-line flags for the root command
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "Path to the configuration file (Default: $HOME/.vimbin.yaml).")
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "Path to the configuration file.")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "", false, "Activates debug output for detailed logging.")
 	rootCmd.PersistentFlags().StringP("token", "t", "", "Token to use for authentication. If not set, a random token will be generated.")
 	rootCmd.PersistentFlags().BoolVarP(&trace, "trace", "", false, "Enables trace mode. This will show the content in the logs!")
@@ -117,27 +117,13 @@ func init() {
 // initConfig reads the configuration from the specified file or environment variables.
 func initConfig() {
 	if cfgFile != "" {
-		// Check if the specified config file exists
-		if _, err := os.Stat(cfgFile); err != nil {
-			log.Fatal().Msg("Config file '%s' not found")
-		}
-
 		// Use the config file specified by the flag.
 		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find the home directory.
-		home, err := os.UserHomeDir()
-		cobra.CheckErr(err)
+		viper.AutomaticEnv() // Read in environment variables that match
 
-		// Search for the config file in the home directory with the name ".vimbin" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigType("yaml")
-		viper.SetConfigName(".vimbin")
+		if err := config.App.Read(viper.ConfigFileUsed()); err != nil {
+			log.Fatal().Msgf("Error reading config file: %v", err)
+		}
 	}
 
-	viper.AutomaticEnv() // Read in environment variables that match
-
-	if err := config.App.Read(viper.ConfigFileUsed()); err != nil {
-		log.Fatal().Msgf("Error reading config file: %v", err)
-	}
 }

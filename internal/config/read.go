@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/mitchellh/mapstructure"
 
@@ -21,12 +20,6 @@ import (
 //   - error
 //     An error if reading or unmarshalling the configuration fails.
 func (c *Config) Read(configPath string) error {
-
-	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		// No configuration file found
-		return nil
-	}
-
 	// Set the Viper config file path
 	viper.SetConfigFile(configPath)
 
