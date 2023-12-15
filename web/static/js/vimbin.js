@@ -61,7 +61,63 @@ document.addEventListener("DOMContentLoaded", function () {
     matchBrackets: true,
     showCursorWhenSelecting: true,
     theme: getPreferredTheme(),
+    lineWrapping: true, // Optional: enable line wrapping if desired
   });
+
+  editor.setOption("extraKeys", {
+    "Ctrl-Y": function () {
+      const selectedText = editor.getSelection();
+
+      if (!selectedText) {
+        document.getElementById("vim-command-line").innerText =
+          "No text selected to yank";
+        setClearMessageTimer();
+        return;
+      }
+
+      navigator.clipboard
+        .writeText(selectedText)
+        .then(function () {
+          document.getElementById("vim-command-line").innerText =
+            "Yanked to clipboard";
+        })
+        .catch(function (error) {
+          document.getElementById("vim-command-line").innerText =
+            "Error yanking to clipboard: " + error.message;
+        });
+
+      setClearMessageTimer();
+      editor.focus();
+    },
+    "Ctrl-P": function () {
+      navigator.clipboard
+        .readText()
+        .then(function (clipboardText) {
+          if (clipboardText) {
+            const cursor = editor.getCursor();
+            editor.replaceRange(clipboardText, cursor);
+            document.getElementById("vim-command-line").innerText =
+              "Pasted from clipboard";
+          } else {
+            document.getElementById("vim-command-line").innerText =
+              "Clipboard is empty";
+          }
+        })
+        .catch(function (error) {
+          document.getElementById("vim-command-line").innerText =
+            "Error pasting from clipboard: " + error.message;
+        });
+
+      setClearMessageTimer();
+      editor.focus();
+    },
+  });
+
+  function setClearMessageTimer() {
+    setTimeout(function () {
+      document.getElementById("vim-command-line").innerText = "";
+    }, 3000);
+  }
 
   editor.focus();
 
