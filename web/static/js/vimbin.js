@@ -53,6 +53,17 @@ document.addEventListener("DOMContentLoaded", function () {
         vimModeElement.classList.add("unknown");
     }
   }
+  // Function to show relative line numbers
+  function showRelativeLines(cm) {
+    const lineNum = cm.getCursor().line + 1;
+    if (cm.state.curLineNum === lineNum) {
+      return;
+    }
+    cm.state.curLineNum = lineNum;
+    cm.setOption("lineNumberFormatter", (l) =>
+      l === lineNum ? lineNum : Math.abs(lineNum - l),
+    );
+  }
 
   var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     lineNumbers: true,
@@ -64,60 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
     lineWrapping: true, // Optional: enable line wrapping if desired
   });
 
-  editor.setOption("extraKeys", {
-    "Ctrl-Y": function () {
-      const selectedText = editor.getSelection();
-
-      if (!selectedText) {
-        document.getElementById("vim-command-line").innerText =
-          "No text selected to yank";
-        setClearMessageTimer();
-        return;
-      }
-
-      navigator.clipboard
-        .writeText(selectedText)
-        .then(function () {
-          document.getElementById("vim-command-line").innerText =
-            "Yanked to clipboard";
-        })
-        .catch(function (error) {
-          document.getElementById("vim-command-line").innerText =
-            "Error yanking to clipboard: " + error.message;
-        });
-
-      setClearMessageTimer();
-      editor.focus();
-    },
-    "Ctrl-P": function () {
-      navigator.clipboard
-        .readText()
-        .then(function (clipboardText) {
-          if (clipboardText) {
-            const cursor = editor.getCursor();
-            editor.replaceRange(clipboardText, cursor);
-            document.getElementById("vim-command-line").innerText =
-              "Pasted from clipboard";
-          } else {
-            document.getElementById("vim-command-line").innerText =
-              "Clipboard is empty";
-          }
-        })
-        .catch(function (error) {
-          document.getElementById("vim-command-line").innerText =
-            "Error pasting from clipboard: " + error.message;
-        });
-
-      setClearMessageTimer();
-      editor.focus();
-    },
-  });
-
-  function setClearMessageTimer() {
-    setTimeout(function () {
-      document.getElementById("vim-command-line").innerText = "";
-    }, 3000);
-  }
+  editor.on("cursorActivity", showRelativeLines);
 
   editor.focus();
 
@@ -162,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       status = "Error saving: " + error.message;
     }
-    document.getElementById("vim-command-line").innerText = status;
+    document.getElementById("status").innerText = status;
   };
 
   // Listen for changes in the prefers-color-scheme media query
