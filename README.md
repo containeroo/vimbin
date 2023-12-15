@@ -10,13 +10,13 @@
 
 ### Global Flags
 
-| Flag                    | Description                                                                    |
-| :---------------------- | :----------------------------------------------------------------------------- |
-| `-c`, `--config` `PATH` | Path to the configuration file (Default: `$HOME/.vimbin.yaml`).                |
-| `--debug`               | Activates debug output for detailed logging.                                   |
+| Flag                    | Description                                                                                                                                 |
+| :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
+| `-c`, `--config` `PATH` | Path to the configuration file.                                                                                                             |
+| `--debug`               | Activates debug output for detailed logging.                                                                                                |
 | `-t`, `--token` `TOKEN` | Token to use for authentication. If not set, a random token will be generated. Can also be set with the environment variable `VIMBIN_TOKEN` |
-| `--trace`               | Enables trace mode. This will show the content in the logs!                    |
-| `-v`, `--version`       | Print version and exit.                                                        |
+| `--trace`               | Enables trace mode. This will show the content in the logs!                                                                                 |
+| `-v`, `--version`       | Print version and exit.                                                                                                                     |
 
 ### Serve
 
