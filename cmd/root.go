@@ -29,7 +29,7 @@ import (
 )
 
 const (
-	version = "v0.0.7"
+	version = "v0.0.8"
 )
 
 var (
@@ -125,5 +125,4 @@ func initConfig() {
 			log.Fatal().Msgf("Error reading config file: %v", err)
 		}
 	}
-
 }
