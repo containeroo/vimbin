@@ -68,7 +68,7 @@ server:
 	t.Run("Invalid file path", func(t *testing.T) {
 		config := &Config{}
 		err := config.Read("path/to/non_existent.yaml")
-		assert.Nil(t, err)
+		assert.EqualError(t, err, "Failed to read config file: open path/to/non_existent.yaml: no such file or directory")
 	})
 
 	t.Run("Invalid YAML", func(t *testing.T) {
@@ -86,7 +86,6 @@ server:
 		// Run the test
 		cfg := &Config{}
 		err = cfg.Read(filePath.Name())
-		assert.Error(t, err) // We expect an error because the file has incorrect content
 		assert.EqualError(t, err, "Failed to unmarshal config file: 1 error(s) decoding:\n\n* cannot parse 'server.api.skipInsecureVerify' as bool: strconv.ParseBool: parsing \"not_a_boolean\": invalid syntax")
 	})
 }
