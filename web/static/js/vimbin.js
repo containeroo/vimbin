@@ -1,57 +1,45 @@
-// Desc: Main JavaScript file for the Vimbin web app
 document.addEventListener("DOMContentLoaded", function () {
   // Function to get the preferred theme (dark, light, or system default)
   function getPreferredTheme() {
-    // If the browser doesn't support the prefers-color-scheme media query, return the default theme
-    if (!window.matchMedia) {
-      return "default";
-    }
+    return window.matchMedia?.("(prefers-color-scheme: dark)")?.matches
+      ? "catppuccin"
+      : "default";
+  }
 
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      return "catppuccin";
-    }
+  // Function to set the theme based on the initial color scheme
+  function setThemeBasedOnColorScheme() {
+    const preferredTheme = getPreferredTheme();
+    console.log(`Setting theme to '${preferredTheme}'`);
 
-    if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-      return "default";
-    }
-
-    return "default";
+    editor.setOption("theme", preferredTheme);
   }
 
   // Function to update Vim mode display
   function updateVimMode(vimEvent, vimModeElement) {
-    const mode = vimEvent.mode;
-    const sub = vimEvent.subMode;
+    const { mode, subMode } = vimEvent;
 
+    console.log(`VIM mode '${mode}', subMode '${subMode}'`);
+
+    // Mapping of mode to corresponding text and class
+    const modeMap = {
+      normal: { text: "NORMAL", class: "normal" },
+      insert: { text: "INSERT", class: "insert" },
+      visual: {
+        text: subMode === "" ? "VISUAL" : "V-LINE",
+        class: subMode === "" ? "visual" : "visual-line",
+      },
+      unknown: { text: "UNKNOWN", class: "unknown" },
+    };
+
+    // Remove all existing classes
     vimModeElement.classList.remove(
-      "normal",
-      "insert",
-      "visual",
-      "visual-line",
+      ...Object.values(modeMap).map((entry) => entry.class),
     );
 
-    switch (mode) {
-      case "normal":
-        vimModeElement.innerText = "NORMAL";
-        vimModeElement.classList.add("normal");
-        break;
-      case "insert":
-        vimModeElement.innerText = "INSERT";
-        vimModeElement.classList.add("insert");
-        break;
-      case "visual":
-        if (sub === "") {
-          vimModeElement.innerText = "VISUAL";
-          vimModeElement.classList.add("visual");
-          break;
-        }
-        vimModeElement.innerText = "V-LINE";
-        vimModeElement.classList.add("visual-line");
-        break;
-      default:
-        vimModeElement.innerText = "UNKNOWN";
-        vimModeElement.classList.add("unknown");
-    }
+    // Update text and add corresponding class
+    const { text, class: modeClass } = modeMap[mode] || modeMap.unknown;
+    vimModeElement.innerText = text;
+    vimModeElement.classList.add(modeClass);
   }
 
   // Function to show relative line numbers
@@ -118,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     statusElement.innerText = status;
-    statusElement.classList.remove("isError", "noChanges"); // Remove all classes
+    statusElement.classList.remove("isError", "noChanges");
 
     if (isError) {
       statusElement.classList.add("isError");
@@ -146,11 +134,10 @@ document.addEventListener("DOMContentLoaded", function () {
     matchBrackets: true,
     showCursorWhenSelecting: true,
     theme: getPreferredTheme(),
-    lineWrapping: true, // Optional: enable line wrapping if desired
+    lineWrapping: true,
   });
 
   editor.on("cursorActivity", showRelativeLines);
-  editor.focus();
 
   // Custom vim Ex commands
   CodeMirror.Vim.defineEx("x", "", function () {
@@ -165,17 +152,13 @@ document.addEventListener("DOMContentLoaded", function () {
   CodeMirror.commands.save = saveContent;
 
   // Listen for changes in the prefers-color-scheme media query
-  window.matchMedia("(prefers-color-scheme: dark)").addListener((e) => {
-    if (e.matches) {
-      editor.setOption("theme", "catppuccin");
-    } else {
-      editor.setOption("theme", "default");
-    }
-  });
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addListener(setThemeBasedOnColorScheme);
+  window
+    .matchMedia("(prefers-color-scheme: light)")
+    .addListener(setThemeBasedOnColorScheme);
 
-  window.matchMedia("(prefers-color-scheme: light)").addListener((e) => {
-    if (e.matches) {
-      editor.setOption("theme", "default");
-    }
-  });
+  // Focus editor
+  editor.focus();
 });
