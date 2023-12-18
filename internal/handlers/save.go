@@ -43,10 +43,10 @@ func Save(w http.ResponseWriter, r *http.Request) {
 
 	// Define a function to merge old and new content
 	mergeContentFunc := func(oldContent, newContent string) string {
-		meredContent := newContent
-		log.Trace().Msgf("Merging content: %s", meredContent)
+		mergedContent := newContent
+		log.Trace().Msgf("Merging content: %s", mergedContent)
 
-		return meredContent
+		return mergedContent
 	}
 
 	// Define a function for updating content in storage
