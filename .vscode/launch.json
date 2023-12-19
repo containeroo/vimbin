@@ -10,10 +10,13 @@
             "request": "launch",
             "mode": "debug",
             "program": "main.go",
+            "env": {
+              "VIMBIN_THEME": "dark"
+              ,"VIMBIN_DEBUG": "true"
+            },
             "args": [
-                "--config"
-                ,"./.vimbin.yaml"
-                ,"--trace"
+                "serve"
+
             ]
         }
     ]

@@ -53,6 +53,7 @@ func (c *Config) Parse() (err error) {
 	// Check if the API token was set as ENV variable
 	if token := os.Getenv("VIMBIN_TOKEN"); token != "" {
 		c.Server.Api.Token.Set(token)
+		log.Debug().Msgf("Using API token from ENV variable: %s", token)
 	}
 
 	// Check if the API token is valid
@@ -61,6 +62,15 @@ func (c *Config) Parse() (err error) {
 			return fmt.Errorf("Unable to generate API token: %s", err)
 		}
 		log.Debug().Msgf("Generated API token: %s", c.Server.Api.Token.Get())
+	}
+
+	// Check if the theme was set as ENV variable
+	if theme := os.Getenv("VIMBIN_THEME"); theme != "" {
+		if !utils.IsInList(theme, SupportedThemes) {
+			return fmt.Errorf("Unsupported theme: %s. Supported themes are: %s", theme, SupportedThemes)
+		}
+		c.Server.Web.Theme = theme
+		log.Debug().Msgf("Using theme from ENV variable: %s", theme)
 	}
 
 	return nil

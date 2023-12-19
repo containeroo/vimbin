@@ -20,6 +20,7 @@ import (
 	"os"
 	"time"
 	"vimbin/internal/config"
+	"vimbin/internal/utils"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -67,7 +68,15 @@ var rootCmd = &cobra.Command{
 		output := zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339}
 		log.Logger = zerolog.New(output).With().Timestamp().Logger()
 
-		// Configure log levels based on debug and trace flags
+		// Retrieve debug and trace flags from environment variables if not explicitly set
+		if !debug || !trace {
+			var err error
+			if debug, trace, err = utils.GetDebugAndTrace(); err != nil {
+				log.Fatal().Msgf("Failed to retrieve debug and trace flags. %s", err)
+			}
+		}
+
+		// Set the log level
 		if debug {
 			zerolog.SetGlobalLevel(zerolog.DebugLevel)
 			log.Debug().Msgf("Verbose output enabled")
@@ -75,6 +84,7 @@ var rootCmd = &cobra.Command{
 			zerolog.SetGlobalLevel(zerolog.TraceLevel)
 			log.Debug().Msgf("Trace output enabled")
 		}
+
 		if token := cmd.Flag("token").Value.String(); token != "" {
 			config.App.Server.Api.Token.Set(token)
 		}
@@ -116,10 +126,11 @@ func init() {
 
 // initConfig reads the configuration from the specified file or environment variables.
 func initConfig() {
+	viper.AutomaticEnv() // Read in environment variables that match
+
 	if cfgFile != "" {
 		// Use the config file specified by the flag.
 		viper.SetConfigFile(cfgFile)
-		viper.AutomaticEnv() // Read in environment variables that match
 
 		if err := config.App.Read(viper.ConfigFileUsed()); err != nil {
 			log.Fatal().Msgf("Error reading config file: %v", err)

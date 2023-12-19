@@ -13,9 +13,9 @@
 | Flag                    | Description                                                                                                                                 |
 | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
 | `-c`, `--config` `PATH` | Path to the configuration file.                                                                                                             |
-| `--debug`               | Activates debug output for detailed logging.                                                                                                |
+| `--debug`               | Activates debug output for detailed logging. Can also be set with the environment variable `VIMBIN_DEBUG`                                   |
 | `-t`, `--token` `TOKEN` | Token to use for authentication. If not set, a random token will be generated. Can also be set with the environment variable `VIMBIN_TOKEN` |
-| `--trace`               | Enables trace mode. This will show the content in the logs!                                                                                 |
+| `--trace`               | Enables trace mode. This will show the content in the logs! Can also be set with the environment variable `VIMBIN_TRACE`                    |
 | `-v`, `--version`       | Print version and exit.                                                                                                                     |
 
 ### Serve
@@ -28,13 +28,13 @@ Start the server:
 
 **Flags:**
 
-| Flag                                    | Description                                                                                      |
-| :-------------------------------------- | :----------------------------------------------------------------------------------------------- |
-| `-d`, `--directory` `DIRECTORY`         | The path to the storage directory. Defaults to the current working directory. (default `$(pwd)`) |
-| `-a`, `--listen-address` `ADDRESS:PORT` | The address to listen on for HTTP requests. (default `:8080`)                                    |
-| `-n`, `--name` string                   | The name of the file to save. (default ".vimbin")                                                |
-| `--theme` THEME                         | The theme to use. Can be `auto`, `light` or `dark`. (default `auto`)                             |
-| `-h`, `--help`                          | help for serve                                                                                   |
+| Flag                                    | Description                                                                                                                        |
+| :-------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
+| `-d`, `--directory` `DIRECTORY`         | The path to the storage directory. (default `$(pwd)`)                                                                              |
+| `-a`, `--listen-address` `ADDRESS:PORT` | The address to listen on for HTTP requests. (default `:8080`)                                                                      |
+| `-n`, `--name` string                   | The name of the file to save. (default ".vimbin")                                                                                  |
+| `--theme` THEME                         | The theme to use. Can be `auto`, `light` or `dark`. (default `auto`). Can also be set with the environment variable `VIMBIN_THEME` |
+| `-h`, `--help`                          | help for serve                                                                                                                     |
 
 ### Push
 

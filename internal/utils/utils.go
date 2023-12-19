@@ -7,8 +7,53 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
 	"strconv"
 )
+
+// Environment variable names
+const (
+	VIMBINDebugEnv = "VIMBIN_DEBUG"
+	VIMBINTraceEnv = "VIMBIN_TRACE"
+)
+
+// GetDebugAndTrace retrieves the debug and trace flags from environment variables.
+//
+// The function checks the "VIMBIN_DEBUG" and "VIMBIN_TRACE" environment variables,
+// parses their values, and returns the corresponding boolean flags.
+//
+// Returns:
+//   - debug: bool
+//     True if "VIMBIN_DEBUG" is set to "true", false otherwise.
+//   - trace: bool
+//     True if "VIMBIN_TRACE" is set to "true", false otherwise.
+//   - err: error
+//     An error if there was an issue parsing the environment variables or if
+//     both "VIMBIN_DEBUG" and "VIMBIN_TRACE" are set simultaneously.
+func GetDebugAndTrace() (debug bool, trace bool, err error) {
+	// Check and parse VIMBIN_DEBUG environment variable
+	if debugEnv := os.Getenv(VIMBINDebugEnv); debugEnv != "" {
+		debug, err = strconv.ParseBool(debugEnv)
+		if err != nil {
+			return false, false, fmt.Errorf("Unable to parse '%s'. %s", VIMBINDebugEnv, err)
+		}
+	}
+
+	// Check and parse VIMBIN_TRACE environment variable
+	if traceEnv := os.Getenv(VIMBINTraceEnv); traceEnv != "" {
+		trace, err = strconv.ParseBool(traceEnv)
+		if err != nil {
+			return false, false, fmt.Errorf("Unable to parse '%s'. %s", VIMBINTraceEnv, err)
+		}
+	}
+
+	// Check for mutual exclusivity of debug and trace
+	if debug && trace {
+		return false, false, fmt.Errorf("'%s' and '%s' are mutually exclusive", VIMBINDebugEnv, VIMBINTraceEnv)
+	}
+
+	return debug, trace, nil
+}
 
 // IsInList checks if a value is in a list.
 //

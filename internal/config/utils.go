@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"strings"
 
 	"github.com/mitchellh/mapstructure"
 	"github.com/rs/zerolog/log"
@@ -28,6 +29,17 @@ int getchar(void)
 return (--n >= 0) ? (unsigned char) *bufp++ : EOF;
 }
 `
+
+// Themes is a list of themes supported by the serve command.
+type Themes []string
+
+// SupportedThemes is a list of themes supported by the serve command.
+var SupportedThemes = Themes{"auto", "light", "dark"}
+
+// String returns the list of themes as a string.
+func (t Themes) String() string {
+	return strings.Join(t, ", ")
+}
 
 // checkStorageFile checks if the storage file exists; if not, it creates it with default content.
 //

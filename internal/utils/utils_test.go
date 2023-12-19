@@ -2,10 +2,81 @@ package utils
 
 import (
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func TestGetDebugAndTrace(t *testing.T) {
+	t.Run("Both debug and trace are set", func(t *testing.T) {
+		os.Setenv(VIMBINDebugEnv, "true")
+		os.Setenv(VIMBINTraceEnv, "true")
+		defer os.Unsetenv(VIMBINDebugEnv)
+		defer os.Unsetenv(VIMBINTraceEnv)
+
+		debug, trace, err := GetDebugAndTrace()
+
+		assert.False(t, debug)
+		assert.False(t, trace)
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "'VIMBIN_DEBUG' and 'VIMBIN_TRACE' are mutually exclusive")
+	})
+
+	t.Run("Invalid debug value", func(t *testing.T) {
+		os.Setenv(VIMBINDebugEnv, "invalid")
+		defer os.Unsetenv(VIMBINDebugEnv)
+
+		debug, trace, err := GetDebugAndTrace()
+
+		assert.False(t, debug)
+		assert.False(t, trace)
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "Unable to parse 'VIMBIN_DEBUG'")
+	})
+
+	t.Run("Invalid trace value", func(t *testing.T) {
+		os.Setenv(VIMBINTraceEnv, "invalid")
+		defer os.Unsetenv(VIMBINTraceEnv)
+
+		debug, trace, err := GetDebugAndTrace()
+
+		assert.False(t, debug)
+		assert.False(t, trace)
+		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "Unable to parse 'VIMBIN_TRACE'")
+	})
+
+	t.Run("Debug is set", func(t *testing.T) {
+		os.Setenv(VIMBINDebugEnv, "true")
+		defer os.Unsetenv(VIMBINDebugEnv)
+
+		debug, trace, err := GetDebugAndTrace()
+
+		assert.True(t, debug)
+		assert.False(t, trace)
+		assert.NoError(t, err)
+	})
+
+	t.Run("Trace is set", func(t *testing.T) {
+		os.Setenv(VIMBINTraceEnv, "true")
+		defer os.Unsetenv(VIMBINTraceEnv)
+
+		debug, trace, err := GetDebugAndTrace()
+
+		assert.False(t, debug)
+		assert.True(t, trace)
+		assert.NoError(t, err)
+	})
+
+	t.Run("Neither debug nor trace is set", func(t *testing.T) {
+		debug, trace, err := GetDebugAndTrace()
+
+		assert.False(t, debug)
+		assert.False(t, trace)
+		assert.NoError(t, err)
+	})
+}
 
 func TestIsInList(t *testing.T) {
 	t.Run("Value is in the list", func(t *testing.T) {
@@ -53,6 +124,7 @@ func TestExtractHostAndPort(t *testing.T) {
 		_, _, err := ExtractHostAndPort(address)
 
 		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "missing port in address")
 	})
 
 	t.Run("Invalid port", func(t *testing.T) {
@@ -61,6 +133,7 @@ func TestExtractHostAndPort(t *testing.T) {
 		_, _, err := ExtractHostAndPort(address)
 
 		assert.Error(t, err)
+		assert.Contains(t, err.Error(), "parsing \"invalid\"")
 	})
 }
 

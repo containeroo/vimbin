@@ -18,7 +18,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"strings"
 	"text/template"
 	"vimbin/internal/config"
 	"vimbin/internal/handlers"
@@ -30,9 +29,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// supportedThemes is a list of themes supported by the serve command.
-var supportedThemes = []string{"auto", "light", "dark"}
-
 // serveCmd represents the serve command.
 var serveCmd = &cobra.Command{
 	Use:   "serve",
@@ -42,8 +38,8 @@ var serveCmd = &cobra.Command{
   manipulate text using familiar Vim motions for an enhanced editing experience.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Check if the specified theme is supported
-		if !utils.IsInList(config.App.Server.Web.Theme, supportedThemes) {
-			fmt.Printf("Unsupported output format: %s. Supported formats are: %s\n", config.App.Server.Web.Theme, strings.Join(supportedThemes, ", "))
+		if !utils.IsInList(config.App.Server.Web.Theme, config.SupportedThemes) {
+			fmt.Printf("Unsupported output format: %s. Supported formats are: %s\n", config.App.Server.Web.Theme, config.SupportedThemes)
 			_ = cmd.Help() // Makes the linter happy
 			os.Exit(1)
 		}
@@ -74,9 +70,9 @@ func init() {
 	// Define command-line flags for the serve command
 	serveCmd.PersistentFlags().StringVarP(&config.App.Server.Web.Address, "listen-address", "a", ":8080", "The address to listen on for HTTP requests.")
 
-	serveCmd.PersistentFlags().StringVarP(&config.App.Server.Web.Theme, "theme", "", "auto", fmt.Sprintf("The theme to use. Can be %s.", strings.Join(supportedThemes, "|")))
+	serveCmd.PersistentFlags().StringVarP(&config.App.Server.Web.Theme, "theme", "", "auto", fmt.Sprintf("The theme to use. Can be %s.", config.SupportedThemes))
 	serveCmd.RegisterFlagCompletionFunc("theme", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
-		return supportedThemes, cobra.ShellCompDirectiveDefault
+		return config.SupportedThemes, cobra.ShellCompDirectiveDefault
 	})
 
 	serveCmd.PersistentFlags().StringVarP(&config.App.Storage.Directory, "directory", "d", "$(pwd)", "The path to the storage directory. Defaults to the current working directory.")
