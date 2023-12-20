@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     )?.matches;
 
     // If theme is set to "dark" or "auto" and the user prefers dark mode, return "catppuccino"
-    if ((theme === "auto" || theme === "dark") && prefersDarkMode) {
+    if ((theme === "auto" && prefersDarkMode) || theme === "dark") {
       return "catppuccin";
     }
 
