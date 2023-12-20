@@ -30,7 +30,7 @@ import (
 )
 
 const (
-	version = "v0.0.14"
+	version = "v0.0.16"
 )
 
 var (
@@ -53,6 +53,9 @@ var rootCmd = &cobra.Command{
 
 - push: Quickly send text to the vimbin server from the command line. This allows for easy integration
   with other tools and scripts, streamlining the process of sharing content through vimbin.
+
+- pull: Retrieve the latest content from the vimbin server. This allows for easy integration with other
+  tools and scripts, streamlining the process of retrieving content from vimbin.
   `,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		// PersistentPreRun is executed before any subcommand is executed.
@@ -65,6 +68,7 @@ var rootCmd = &cobra.Command{
 
 		// Configure zerolog
 		zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 		output := zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339}
 		log.Logger = zerolog.New(output).With().Timestamp().Logger()
 
@@ -85,9 +89,13 @@ var rootCmd = &cobra.Command{
 			log.Debug().Msgf("Trace output enabled")
 		}
 
+		// Save token to config
 		if token := cmd.Flag("token").Value.String(); token != "" {
 			config.App.Server.Api.Token.Set(token)
 		}
+
+		config.App.Version = version
+		log.Debug().Msgf("Version: %s", config.App.Version)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		// Run is executed if no subcommand is specified.

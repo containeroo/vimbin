@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 	"vimbin/internal/config"
 	"vimbin/internal/utils"
@@ -49,68 +48,73 @@ Examples:
 	Run: func(cmd *cobra.Command, args []string) {
 		// Check if at least one character is provided
 		if len(args) < 1 {
-			log.Error().Msg("You must push at least one character.")
-			os.Exit(1)
+			log.Fatal().Msg("You must push at least one character.")
 		}
 
 		url := strings.TrimSuffix(config.App.Server.Api.Address, "/")
 		if url == "" {
-			log.Error().Msg("URL is empty")
-			os.Exit(1)
+			log.Fatal().Msg("URL is empty")
+		}
+
+		apiToken := config.App.Server.Api.Token.Get()
+		if apiToken == "" {
+			log.Fatal().Msg("API token is empty")
 		}
 
 		// Concatenate input arguments into a single string
-		body := strings.Join(args, "\n")
+		input := strings.Join(args, "\n")
 
 		// Build the URL based on the "append" flag
 		if appendFlag {
 			url += "/append"
-			body = "\n" + body
+			input = "\n" + input
 		} else {
 			url += "/save"
 		}
 
 		// Prepare content for the POST request
-		content := map[string]string{"content": body}
+		content := map[string]string{"content": input}
 		requestBody, err := json.Marshal(content)
 		if err != nil {
-			log.Error().Msgf("Error encoding JSON: %s", err)
-			os.Exit(1)
+			log.Fatal().Msgf("Error encoding JSON: %s", err)
 		}
 
 		httpClient := utils.CreateHTTPClient(config.App.Server.Api.SkipInsecureVerify)
+		req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBody))
+		if err != nil {
+			log.Fatal().Msgf("Error creating HTTP request: %v", err)
+		}
+
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("X-API-Token", apiToken)
 
 		// Make the POST request to the vimbin server
-		response, err := httpClient.Post(url, "application/json", bytes.NewBuffer(requestBody))
+		response, err := httpClient.Do(req)
 		if err != nil {
-			log.Error().Msgf("Error making POST request: %s", err)
-			os.Exit(1)
+			log.Fatal().Msgf("Error making POST request: %s", err)
 		}
 		defer response.Body.Close()
 
 		// Check for successful response
 		if response.StatusCode != http.StatusOK {
-			log.Error().Msgf("Unexpected status code %d", response.StatusCode)
-			os.Exit(1)
+			log.Fatal().Msgf("Unexpected status code %d", response.StatusCode)
 		}
 
-		// Read and print the response body
-		var responseBodyBuffer bytes.Buffer
-		_, err = io.Copy(&responseBodyBuffer, response.Body)
+		body, err := io.ReadAll(response.Body)
 		if err != nil {
-			log.Error().Msgf("Error reading response body: %s", err)
-			os.Exit(1)
+			log.Fatal().Msgf("Error reading response body: %s", err)
 		}
 
-		fmt.Println(responseBodyBuffer.String())
+		// Print the content to the console
+		fmt.Println(string(body))
 	},
 }
 
 func init() {
-	// Add 'fetchCmd' to the root command
+	// Add 'pullCmd' to the root command
 	rootCmd.AddCommand(pushCmd)
 
-	// Define command-line flags for 'fetchCmd'
+	// Define command-line flags for 'pullCmd'
 	pushCmd.PersistentFlags().StringVarP(&config.App.Server.Api.Address, "url", "u", "", "The URL of the vimbin server")
 	pushCmd.PersistentFlags().BoolVarP(&config.App.Server.Api.SkipInsecureVerify, "insecure-skip-verify", "i", false, "Skip TLS certificate verification")
 	pushCmd.PersistentFlags().BoolVarP(&appendFlag, "append", "a", false, "Append content to the existing content")

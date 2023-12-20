@@ -31,6 +31,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		Content: config.App.Storage.Content.Get(),
 		Token:   config.App.Server.Api.Token.Get(),
 		Theme:   config.App.Server.Web.Theme,
+		Version: config.App.Version,
 	}
 
 	if err := config.App.HtmlTemplate.Execute(w, page); err != nil {

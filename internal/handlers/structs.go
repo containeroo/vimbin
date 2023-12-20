@@ -9,4 +9,5 @@ type Page struct {
 	Content string // Content is the content of the page.
 	Token   string // Token is the API token.
 	Theme   string // Theme is the theme of the page.
+	Version string // Version is the version of the application.
 }

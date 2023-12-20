@@ -53,12 +53,12 @@ Push data to the `vimbin` server:
 | `-u`, `--url` `URL`            | The URL of the vimbin server           |
 | `-h`, `--help`                 | help for push                          |
 
-### Fetch
+### Pull
 
-Fetch the latest data from the `vimbin` server:
+Pull the latest data from the `vimbin` server:
 
 ```bash
-./vimbin fetch
+./vimbin pull
 ```
 
 **Flags:**

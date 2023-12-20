@@ -11,6 +11,7 @@ var App Config
 
 // Config represents the application configuration.
 type Config struct {
+	Version      string             `mapstructure:"-"`       // Version is the version of the application.
 	HtmlTemplate *template.Template `mapstructure:"-"`       // HtmlTemplate contains the HTML template content.
 	Server       Server             `mapstructure:"server"`  // Server represents the server configuration.
 	Storage      Storage            `mapstructure:"storage"` // Storage represents the storage configuration.
