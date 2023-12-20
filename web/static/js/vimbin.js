@@ -1,19 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Function to get the preferred theme (dark, light, or system default)
   function getPreferredTheme() {
-    return window.matchMedia?.("(prefers-color-scheme: dark)")?.matches
-      ? "catppuccin"
-      : "default";
+    const prefersDarkMode = window.matchMedia?.(
+      "(prefers-color-scheme: dark)",
+    )?.matches;
+
+    // If theme is set to "dark" or "auto" and the user prefers dark mode, return "catppuccino"
+    if ((theme === "auto" || theme === "dark") && prefersDarkMode) {
+      return "catppuccin";
+    }
+
+    // For any other case, return "light"
+    return "light";
   }
 
   // Function to set the theme based on the initial color scheme or the 'theme' variable
   function setThemeBasedOnColorScheme() {
-    const preferredTheme = theme || getPreferredTheme();
+    const preferredTheme = getPreferredTheme();
     console.log(`Setting theme to '${preferredTheme}'`);
-
     editor.setOption("theme", preferredTheme);
   }
-
   // Function to update Vim mode display
   function updateVimMode(vimEvent, vimModeElement) {
     const { mode, subMode } = vimEvent;
