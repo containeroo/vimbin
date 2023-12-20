@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
       : "default";
   }
 
-  // Function to set the theme based on the initial color scheme
+  // Function to set the theme based on the initial color scheme or the 'theme' variable
   function setThemeBasedOnColorScheme() {
-    const preferredTheme = getPreferredTheme();
+    const preferredTheme = theme || getPreferredTheme();
     console.log(`Setting theme to '${preferredTheme}'`);
 
     editor.setOption("theme", preferredTheme);

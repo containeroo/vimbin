@@ -8,4 +8,5 @@ type Page struct {
 	Title   string // Title is the title of the page.
 	Content string // Content is the content of the page.
 	Token   string // Token is the API token.
+	Theme   string // Theme is the theme of the page.
 }

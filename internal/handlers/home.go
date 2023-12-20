@@ -30,6 +30,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		Title:   "vimbin - a pastebin with vim motion",
 		Content: config.App.Storage.Content.Get(),
 		Token:   config.App.Server.Api.Token.Get(),
+		Theme:   config.App.Server.Web.Theme,
 	}
 
 	if err := config.App.HtmlTemplate.Execute(w, page); err != nil {
