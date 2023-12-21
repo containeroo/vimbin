@@ -14,6 +14,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// StaticFS is the embedded filesystem for static files.
 var StaticFS embed.FS
 
 // Run starts the HTTP server.

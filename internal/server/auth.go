@@ -6,7 +6,19 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// ApiTokenMiddleware checks for the presence and validity of the API token.
+// ApiTokenMiddleware is a middleware function that checks for the presence and validity of the API token.
+//
+// Parameters:
+//   - next: http.HandlerFunc
+//     The next HTTP handler in the chain.
+//   - token: string
+//     The expected API token for authentication.
+//
+// Behavior:
+//
+//	The middleware checks the 'X-API-Token' header in the incoming request against the provided token.
+//	If the header is missing or the token is invalid, it responds with an HTTP 401 Unauthorized status.
+//	If the token is valid, it calls the next handler in the chain.
 func ApiTokenMiddleware(next http.HandlerFunc, token string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		apiToken := r.Header.Get("X-API-Token")
