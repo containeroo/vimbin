@@ -78,10 +78,10 @@ func newRouter(token string) *mux.Router {
 
 	// Handler for embed static files
 	fsys := fs.FS(StaticFS)
-	contentStatic, _ := fs.Sub(fsys, "web/static")
+	contentStatic, _ := fs.Sub(fsys, "web/dist/assets")
 	fs := http.FileServer(http.FS(contentStatic))
-	s := http.StripPrefix("/static/", fs)
-	router.PathPrefix("/static/").Handler(s)
+	s := http.StripPrefix("/assets/", fs)
+	router.PathPrefix("/assets/").Handler(s)
 
 	// Add the handlers to the router
 	for _, h := range Handlers {

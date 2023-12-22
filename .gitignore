@@ -1,3 +1,5 @@
+web/node_modules/
+web/dist/
 .vscode/
 vimbin
 .vimbin

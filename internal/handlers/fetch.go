@@ -27,7 +27,7 @@ func init() {
 func Fetch(w http.ResponseWriter, r *http.Request) {
 	log.Trace().Msg(generateHTTPRequestLogEntry(r))
 
-	w.Header().Set("Content-Type", "application/text")
+	w.Header().Set("Content-Type", "text/plain")
 
 	content := config.App.Storage.Content.Get()
 	if len(content) == 0 {
@@ -35,8 +35,7 @@ func Fetch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	contentBytes := []byte(content)
-	if _, err := w.Write(contentBytes); err != nil {
+	if _, err := w.Write([]byte(content)); err != nil {
 		log.Error().Err(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return

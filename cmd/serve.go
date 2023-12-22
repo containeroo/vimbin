@@ -45,7 +45,7 @@ var serveCmd = &cobra.Command{
 		}
 
 		// Read the HTML template file
-		htmlTemplate, err := template.ParseFS(server.StaticFS, "web/templates/index.html")
+		htmlTemplate, err := template.ParseFS(server.StaticFS, "web/dist/index.html")
 		if err != nil {
 			log.Fatal().Err(err)
 		}

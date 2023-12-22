@@ -1,0 +1,26 @@
+{
+  "name": "code-editor",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.3",
+    "vite": "^4.0.0"
+  },
+  "dependencies": {
+    "@codemirror/autocomplete": "^6.11.1",
+    "@codemirror/commands": "^6.3.2",
+    "@codemirror/language": "^6.9.3",
+    "@codemirror/lint": "^6.4.2",
+    "@codemirror/search": "^6.5.5",
+    "@codemirror/state": "^6.3.3",
+    "@codemirror/view": "^6.22.3",
+    "@replit/codemirror-vim": "^6.1.0",
+    "@uiw/codemirror-extensions-line-numbers-relative": "^4.21.21",
+    "codemirror": "^6.0.1"
+  }
+}

@@ -21,7 +21,7 @@ import (
 	"vimbin/internal/server"
 )
 
-//go:embed web
+//go:embed web/dist
 var staticFs embed.FS
 
 func main() {
