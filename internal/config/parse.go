@@ -64,6 +64,12 @@ func (c *Config) Parse() (err error) {
 		log.Debug().Msgf("Generated API token: %s", c.Server.Api.Token.Get())
 	}
 
+	// Theme defaults
+	c.Server.Web.LightTheme = "latte"
+	if c.Server.Web.DarkTheme == "" {
+		c.Server.Web.DarkTheme = "frappe"
+	}
+
 	// Check if the theme was set as ENV variable
 	if theme := os.Getenv("VIMBIN_THEME"); theme != "" {
 		if !utils.IsInList(theme, SupportedThemes) {
@@ -71,6 +77,14 @@ func (c *Config) Parse() (err error) {
 		}
 		c.Server.Web.Theme = theme
 		log.Debug().Msgf("Using theme from ENV variable: %s", theme)
+	}
+
+	if darkTheme := os.Getenv("VIMBIN_DARK_THEME"); darkTheme != "" {
+		if !utils.IsInList(darkTheme, DarkThemes) {
+			return fmt.Errorf("Unsupported dark theme: %s. Supported dark themes are: %s", darkTheme, DarkThemes)
+		}
+		c.Server.Web.DarkTheme = darkTheme
+		log.Debug().Msgf("Using dark theme from ENV variable: %s", darkTheme)
 	}
 
 	return nil

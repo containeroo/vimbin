@@ -19,8 +19,10 @@ type Config struct {
 
 // Web represents the web configuration.
 type Web struct {
-	Theme   string `mapstructure:"server"`  // Theme is the theme to use for the web interface.
-	Address string `mapstructure:"address"` // Address is the address to listen on for HTTP requests.
+	Theme      string `mapstructure:"server"`     // Theme is the theme to use for the web interface.
+	DarkTheme  string `mapstructure:"darkTheme"`  // DarkTheme is the theme to use for the web interface when dark mode is enabled.
+	LightTheme string `mapstructure:"lightTheme"` // LightTheme is the theme to use for the web interface when light mode is enabled.
+	Address    string `mapstructure:"address"`    // Address is the address to listen on for HTTP requests.
 }
 
 // Token represents the API token.

@@ -1,13 +1,13 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  color: var(--ctp-mocha-text);
-  background: var(--ctp-frappe-base);
+  color: #cdd6f4;
+  background:  #303446;
 }
 
 .header {
-  background-color: var(--ctp-latte-sky);
-  color: var(--ctp-latte-overlay0);
+  background-color: #04a5e5;
+  color: v #9ca0b0;
 }
 
 .container {

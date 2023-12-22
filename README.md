@@ -6,6 +6,12 @@
 
 - **push**: Quickly send text to the `vimbin` server from the command line. This allows for easy integration with other tools and scripts, streamlining the process of sharing content through `vimbin`.
 
+## Themes
+
+For the editor you can chooe between the catppuchin themes `latte`, `mocha`, `frappe` or `macchiato`. If theme is set to `auto`, it gets system preference.
+
+Themes are borrowed from [here](https://github.com/catppuccin/codemirror).
+
 ## Commands
 
 ### Global Flags
@@ -28,13 +34,14 @@ Start the server:
 
 **Flags:**
 
-| Flag                                    | Description                                                                                                                        |
-| :-------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
-| `-d`, `--directory` `DIRECTORY`         | The path to the storage directory. (default `$(pwd)`)                                                                              |
-| `-a`, `--listen-address` `ADDRESS:PORT` | The address to listen on for HTTP requests. (default `:8080`)                                                                      |
-| `-n`, `--name` string                   | The name of the file to save. (default ".vimbin")                                                                                  |
-| `--theme` THEME                         | The theme to use. Can be `auto`, `light` or `dark`. (default `auto`). Can also be set with the environment variable `VIMBIN_THEME` |
-| `-h`, `--help`                          | help for serve                                                                                                                     |
+| Flag                                    | Description                                                                                                                                                                      |
+| :-------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `-d`, `--directory` `DIRECTORY`         | The path to the storage directory. (default `$(pwd)`)                                                                                                                            |
+| `-a`, `--listen-address` `ADDRESS:PORT` | The address to listen on for HTTP requests. (default `:8080`)                                                                                                                    |
+| `-n`, `--name` string                   | The name of the file to save. (default ".vimbin")                                                                                                                                |
+| `--theme` THEME                         | The theme to use. Can be `auto`, `light` or `dark`. (default `auto`). Can also be set with the environment variable `VIMBIN_THEME`                                               |
+| `--dark-theme` THEME                    | When `theme` set to `auto`, use this as dark theme. Can be `mocha`, `frappe`, `macchiato`. (default `frappe`). Can also be set with the environment variable `VIMBIN_DARK_THEME` |
+| `-h`, `--help`                          | help for serve                                                                                                                                                                   |
 
 ### Push
 

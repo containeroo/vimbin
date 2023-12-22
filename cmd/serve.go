@@ -75,6 +75,10 @@ func init() {
 		return config.SupportedThemes, cobra.ShellCompDirectiveDefault
 	})
 
+	serveCmd.PersistentFlags().StringVarP(&config.App.Server.Web.Theme, "dark-theme", "", "frappe", fmt.Sprintf("When theme set to auto, use this as dark theme. Can be %s.", config.DarkThemes))
+	serveCmd.RegisterFlagCompletionFunc("dark-theme", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		return config.DarkThemes, cobra.ShellCompDirectiveDefault
+	})
 	serveCmd.PersistentFlags().StringVarP(&config.App.Storage.Directory, "directory", "d", "$(pwd)", "The path to the storage directory. Defaults to the current working directory.")
 	serveCmd.PersistentFlags().StringVarP(&config.App.Storage.Name, "name", "n", ".vimbin", "The name of the file to save.")
 }

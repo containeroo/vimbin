@@ -1,0 +1,134 @@
+div.cm-s-latte.CodeMirror {
+  --rosewater: 222, 149, 132;
+  --flamingo: 221, 120, 120;
+  --pink: 236, 131, 208;
+  --mauve: 136, 57, 239;
+  --red: 210, 15, 57;
+  --maroon: 230, 69, 83;
+  --peach: 254, 100, 11;
+  --yellow: 228, 147, 32;
+  --green: 64, 160, 43;
+  --teal: 23, 146, 153;
+  --sky: 4, 165, 229;
+  --sapphire: 32, 159, 181;
+  --blue: 42, 110, 245;
+  --lavender: 114, 135, 253;
+  --text: 76, 79, 105;
+  --subtext1: 92, 95, 119;
+  --subtext0: 108, 111, 133;
+  --overlay2: 124, 127, 147;
+  --overlay1: 140, 143, 161;
+  --overlay0: 156, 160, 176;
+  --surface2: 172, 176, 190;
+  --surface1: 188, 192, 204;
+  --surface0: 204, 208, 218;
+  --base: 239, 241, 245;
+  --mantle: 230, 233, 239;
+  --crust: 220, 224, 232;
+  --bg0: rgb(var(--base));
+  --bg1: rgb(var(--overlay1));
+  --bg4: rgb(var(--overlay0));
+  --fg: rgb(var(--text));
+  --fg3: rgb(var(--subtext0));
+  --gray: rgb(var(--subtext1));
+  --blue: rgb(var(--blue));
+  --yellow: rgb(var(--yellow));
+  --aqua: rgb(var(--blue));
+  --orange: rgb(var(--peach));
+  --current-line: rgb(var(--surface0));
+  --selection: rgb(var(--surface2));
+  --atom: rgb(var(--lavender));
+  --cursor: rgb(var(--overlay1));
+  --keyword: rgb(var(--red));
+  --operator: rgb(var(--sky));
+  --number: rgb(var(--peach));
+  --definition: rgb(var(--blue));
+  --string: rgb(var(--green));
+}
+
+.cm-s-latte.CodeMirror,
+.cm-s-latte .CodeMirror-gutters {
+  background-color: var(--bg0);
+  color: var(--fg3);
+}
+.cm-s-latte .CodeMirror-gutters {
+  background: var(--bg0);
+  border-right: 0px;
+}
+.cm-s-latte .CodeMirror-linenumber {
+  color: var(--bg4);
+}
+.cm-s-latte .CodeMirror-cursor {
+  border-left: 1px solid var(--fg);
+}
+.cm-s-latte.cm-fat-cursor .CodeMirror-cursor {
+  background-color: var(--cursor) !important;
+}
+.cm-s-latte .cm-animate-fat-cursor {
+  background-color: var(--cursor) !important;
+}
+.cm-s-latte div.CodeMirror-selected {
+  background: var(--selection);
+}
+.cm-s-latte span.cm-meta {
+  color: var(--blue);
+}
+.cm-s-latte span.cm-comment {
+  color: var(--gray);
+}
+.cm-s-latte span.cm-number {
+  color: var(--number);
+}
+.cm-s-latte span.cm-atom {
+  color: var(--atom);
+}
+.cm-s-latte span.cm-keyword {
+  color: var(--keyword);
+}
+.cm-s-latte span.cm-variable {
+  color: var(--fg);
+}
+.cm-s-latte span.cm-variable-2 {
+  color: var(--fg);
+}
+.cm-s-latte span.cm-variable-3,
+.cm-s-latte .cm-s-gruvbox-dark span.cm-type {
+  color: var(--yellow);
+}
+.cm-s-latte span.cm-operator {
+  color: var(--operator);
+}
+.cm-s-latte span.cm-callee {
+  color: var(--fg);
+}
+.cm-s-latte span.cm-def {
+  color: var(--definition);
+}
+.cm-s-latte span.cm-property {
+  color: var(--fg);
+}
+.cm-s-latte span.cm-string {
+  color: var(--string);
+}
+.cm-s-latte span.cm-string-2 {
+  color: var(--aqua);
+}
+.cm-s-latte span.cm-qualifier {
+  color: var(--aqua);
+}
+.cm-s-latte span.cm-attribute {
+  color: var(--aqua);
+}
+.cm-s-latte .CodeMirror-activeline-background {
+  background: var(--current-line);
+}
+.cm-s-latte .CodeMirror-matchingbracket {
+  background: var(--gray);
+  color: var(--bg0) !important;
+}
+.cm-s-latte span.cm-builtin {
+  color: var(--orange);
+}
+.cm-s-latte span.cm-tag {
+  color: var(--orange);
+}

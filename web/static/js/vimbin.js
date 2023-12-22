@@ -1,17 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Function to get the preferred theme (dark, light, or system default)
+  // Function to get the preferred theme
   function getPreferredTheme() {
     const prefersDarkMode = window.matchMedia?.(
       "(prefers-color-scheme: dark)",
     )?.matches;
 
-    // If theme is set to "dark" or "auto" and the user prefers dark mode, return "catppuccino"
-    if ((theme === "auto" && prefersDarkMode) || theme === "dark") {
-      return "catppuccin";
+    // If theme is set to "auto" and the system prefers dark mode, return "darkTheme"
+    if (theme === "auto" && prefersDarkMode) {
+      return darkTheme;
     }
 
-    // For any other case, return "light"
-    return "light";
+    const prefersLightMode = window.matchMedia?.(
+      "(prefers-color-scheme: light)",
+    )?.matches;
+
+    // If theme is set to "auto" and the system prefers dark mode, return "darkTheme"
+    if (theme === "auto" && prefersLightMode) {
+      return lightTheme;
+    }
+
+    console.log(`Theme set to '${theme}'`);
+    // For any other case, return the actual theme
+    return theme;
   }
 
   // Function to set the theme based on the initial color scheme or the 'theme' variable

@@ -27,11 +27,13 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	log.Trace().Msg(generateHTTPRequestLogEntry(r))
 
 	page := Page{
-		Title:   "vimbin - a pastebin with vim motion",
-		Content: config.App.Storage.Content.Get(),
-		Token:   config.App.Server.Api.Token.Get(),
-		Theme:   config.App.Server.Web.Theme,
-		Version: config.App.Version,
+		Title:      "vimbin - a pastebin with vim motion",
+		Content:    config.App.Storage.Content.Get(),
+		Token:      config.App.Server.Api.Token.Get(),
+		Theme:      config.App.Server.Web.Theme,
+		LightTheme: config.App.Server.Web.LightTheme,
+		DarkTheme:  config.App.Server.Web.DarkTheme,
+		Version:    config.App.Version,
 	}
 
 	if err := config.App.HtmlTemplate.Execute(w, page); err != nil {

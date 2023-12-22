@@ -1,0 +1,134 @@
+div.cm-s-mocha.CodeMirror {
+  --rosewater: 245, 224, 220;
+  --flamingo: 242, 205, 205;
+  --pink: 245, 194, 231;
+  --mauve: 203, 166, 247;
+  --red: 243, 139, 168;
+  --maroon: 235, 160, 172;
+  --peach: 250, 179, 135;
+  --yellow: 249, 226, 175;
+  --green: 166, 227, 161;
+  --teal: 148, 226, 213;
+  --sky: 137, 220, 235;
+  --sapphire: 116, 199, 236;
+  --blue: 135, 176, 249;
+  --lavender: 180, 190, 254;
+  --text: 198, 208, 245;
+  --subtext1: 179, 188, 223;
+  --subtext0: 161, 168, 201;
+  --overlay2: 142, 149, 179;
+  --overlay1: 123, 129, 157;
+  --overlay0: 105, 109, 134;
+  --surface2: 86, 89, 112;
+  --surface1: 67, 70, 90;
+  --surface0: 49, 50, 68;
+  --base: 30, 30, 46;
+  --mantle: 24, 24, 37;
+  --crust: 17, 17, 27;
+  --bg0: rgb(var(--base));
+  --bg1: rgb(var(--overlay1));
+  --bg4: rgb(var(--overlay0));
+  --fg: rgb(var(--text));
+  --fg3: rgb(var(--subtext0));
+  --gray: rgb(var(--subtext1));
+  --blue: rgb(var(--blue));
+  --yellow: rgb(var(--yellow));
+  --aqua: rgb(var(--blue));
+  --orange: rgb(var(--peach));
+  --current-line: rgb(var(--surface0));
+  --selection: rgb(var(--surface2));
+  --atom: rgb(var(--lavender));
+  --cursor: rgb(var(--overlay1));
+  --keyword: rgb(var(--red));
+  --operator: rgb(var(--sky));
+  --number: rgb(var(--peach));
+  --definition: rgb(var(--blue));
+  --string: rgb(var(--green));
+}
+
+.cm-s-mocha.CodeMirror,
+.cm-s-mocha .CodeMirror-gutters {
+  background-color: var(--bg0);
+  color: var(--fg3);
+}
+.cm-s-mocha .CodeMirror-gutters {
+  background: var(--bg0);
+  border-right: 0px;
+}
+.cm-s-mocha .CodeMirror-linenumber {
+  color: var(--bg4);
+}
+.cm-s-mocha .CodeMirror-cursor {
+  border-left: 1px solid var(--fg);
+}
+.cm-s-mocha.cm-fat-cursor .CodeMirror-cursor {
+  background-color: var(--cursor) !important;
+}
+.cm-s-mocha .cm-animate-fat-cursor {
+  background-color: var(--cursor) !important;
+}
+.cm-s-mocha div.CodeMirror-selected {
+  background: var(--selection);
+}
+.cm-s-mocha span.cm-meta {
+  color: var(--blue);
+}
+.cm-s-mocha span.cm-comment {
+  color: var(--gray);
+}
+.cm-s-mocha span.cm-number {
+  color: var(--number);
+}
+.cm-s-mocha span.cm-atom {
+  color: var(--atom);
+}
+.cm-s-mocha span.cm-keyword {
+  color: var(--keyword);
+}
+.cm-s-mocha span.cm-variable {
+  color: var(--fg);
+}
+.cm-s-mocha span.cm-variable-2 {
+  color: var(--fg);
+}
+.cm-s-mocha span.cm-variable-3,
+.cm-s-mocha .cm-s-gruvbox-dark span.cm-type {
+  color: var(--yellow);
+}
+.cm-s-mocha span.cm-operator {
+  color: var(--operator);
+}
+.cm-s-mocha span.cm-callee {
+  color: var(--fg);
+}
+.cm-s-mocha span.cm-def {
+  color: var(--definition);
+}
+.cm-s-mocha span.cm-property {
+  color: var(--fg);
+}
+.cm-s-mocha span.cm-string {
+  color: var(--string);
+}
+.cm-s-mocha span.cm-string-2 {
+  color: var(--aqua);
+}
+.cm-s-mocha span.cm-qualifier {
+  color: var(--aqua);
+}
+.cm-s-mocha span.cm-attribute {
+  color: var(--aqua);
+}
+.cm-s-mocha .CodeMirror-activeline-background {
+  background: var(--current-line);
+}
+.cm-s-mocha .CodeMirror-matchingbracket {
+  background: var(--gray);
+  color: var(--bg0) !important;
+}
+.cm-s-mocha span.cm-builtin {
+  color: var(--orange);
+}
+.cm-s-mocha span.cm-tag
+  color: var(--orange);
+}
