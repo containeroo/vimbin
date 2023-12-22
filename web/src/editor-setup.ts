@@ -29,8 +29,8 @@ import {
   lineNumbers,
   rectangularSelection,
 } from "@codemirror/view";
-
 import { Extension } from "@codemirror/state";
+import { vimModeDisplay } from "./vim-mode-display";
 
 export const lineNumbersRelative: Extension = [formatNumber()];
 
@@ -64,6 +64,7 @@ export async function initializeEditor(initialContent: string) {
   const state = EditorState.create({
     doc: initialContent,
     extensions: [
+      vimModeDisplay(),
       vim(),
       lineNumbersRelative,
       highlightActiveLineGutter(),
