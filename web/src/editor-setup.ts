@@ -95,11 +95,13 @@ export async function initializeEditor(initialContent: string) {
     ],
   });
 
-  const targetElement = document.querySelector("#editor")!;
+  // const targetElement = document.querySelector("#editor")!;
   const editor = new EditorView({
-    parent: targetElement,
+    parent: document.body,
     state: state,
   });
+
+  console.log(editor.cm.state.vim);
 
   editor.focus();
 }

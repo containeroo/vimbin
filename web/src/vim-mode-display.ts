@@ -13,7 +13,8 @@ export function vimModeDisplay() {
         }
 
         // Log the current Vim mode
-        logCurrentVimMode(cm);
+        console.log(cm.getMode());
+        // logCurrentVimMode(cm);
       }
 
       destroy() {
