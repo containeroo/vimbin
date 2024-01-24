@@ -1,5 +1,5 @@
 import { ViewUpdate, ViewPlugin, PluginValue } from "@codemirror/view";
-import { Vim, getCM } from "@replit/codemirror-vim";
+import { getCM } from "@replit/codemirror-vim";
 
 export function vimModeDisplay() {
   return ViewPlugin.fromClass(
@@ -12,23 +12,22 @@ export function vimModeDisplay() {
           return;
         }
 
-        // Log the current Vim mode
-        console.log(cm.getMode());
-        // logCurrentVimMode(cm);
+        // Retrieve the current Vim mode
+        const currentVimMode = cm.state.vim?.mode || "unknown";
+
+        // Update the Vim mode display element
+        const modeElement = document.getElementById("vim-mode-status");
+        if (modeElement) {
+          modeElement.textContent = currentVimMode.toUpperCase();
+
+          // Update the class for styling
+          modeElement.className = `vim-mode ${currentVimMode}`;
+        }
       }
 
       destroy() {
         // Cleanup logic if needed
       }
     },
-    {
-      // Add other configuration options if necessary
-    },
   );
-}
-
-function logCurrentVimMode(cm: any) {
-  const vimFacet = cm.state.facet(Vim) as { mode?: string };
-  const currentVimMode = vimFacet?.mode || "unknown";
-  console.log("Current Vim Mode:", currentVimMode);
 }

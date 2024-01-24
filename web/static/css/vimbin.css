@@ -1,24 +1,24 @@
+html,
 body {
+  height: 100%;
   margin: 0;
-  font-family: Arial, sans-serif;
-  color: var(--ctp-mocha-text);
-  background: var(--ctp-frappe-base);
-}
-
-.header {
-  background-color: var(--ctp-latte-sky);
-  color: var(--ctp-latte-overlay0);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: "Roboto", sans-serif;
 }
 
 .container {
   margin: 20px;
-  position: relative;
+  height: calc(100vh - 100px);
+  position: relative; /* Keeps the container in a fixed position */
+  overflow: auto; /* Adds scroll if content overflows */
 }
 
 .CodeMirror {
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
-  height: 80vh;
+  height: 100%; /* Full height of the container */
 }
 
 footer {
@@ -26,6 +26,14 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.header {
+  background-color: var(--ctp-latte-sky);
+  color: var(--ctp-latte-overlay0);
 }
 
 .vim-info-container {
@@ -38,32 +46,32 @@ footer {
   font-size: 12px;
   padding: 5px;
   margin-right: 5px;
-  width: 54px;
+  width: 88px;
   white-space: nowrap;
 }
 
 /* Style for the vim mode */
-.normal {
+.vim-mode.normal {
   background-color: #40a02b;
   color: white;
 }
 
-.insert {
+.vim-mode.insert {
   background-color: #1e66f5;
   color: white;
 }
 
-.visual {
+.vim-mode.visual {
   background-color: #fe640b;
   color: white;
 }
 
-.visual-line {
+.vim-mode.visual-line {
   background-color: #8839ef;
   color: white;
 }
 
-.unknown {
+.vim-mode.unknown {
   background-color: #dd7878;
   color: white;
 }

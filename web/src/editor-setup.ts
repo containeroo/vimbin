@@ -5,7 +5,7 @@ import {
   completionKeymap,
 } from "@codemirror/autocomplete";
 import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
-import { vim, Vim } from "@replit/codemirror-vim";
+import { vim } from "@replit/codemirror-vim";
 import {
   bracketMatching,
   defaultHighlightStyle,
@@ -52,14 +52,6 @@ function formatNumber() {
   });
 }
 
-Vim.defineEx("x", "x", function () {
-  console.log("write");
-});
-
-Vim.defineEx("write", "w", function () {
-  console.log("write");
-});
-
 export async function initializeEditor(initialContent: string) {
   const state = EditorState.create({
     doc: initialContent,
@@ -95,13 +87,11 @@ export async function initializeEditor(initialContent: string) {
     ],
   });
 
-  // const targetElement = document.querySelector("#editor")!;
+  const targetElement = document.querySelector("#editor")!;
   const editor = new EditorView({
-    parent: document.body,
+    parent: targetElement,
     state: state,
   });
-
-  console.log(editor.cm.state.vim);
 
   editor.focus();
 }

@@ -12,27 +12,24 @@
     <link rel="stylesheet" href="static/css/vimbin.css" />
   </head>
   <body>
+    <h2>{{.Title}}</h2>
     <div class="container">
-      <h2>{{.Title}}</h2>
-
       <form>
         <div id="editor"></div>
         <script type="module" src="/src/main.ts"></script>
       </form>
-
-      <footer>
-        <div class="vim-info-container">
-          <span id="vim-mode" class="vim-mode normal">NORMAL</span>
-          <div id="status-container">
-            <div id="status"></div>
-            <div id="error-message"></div>
-          </div>
-        </div>
-        <script>
-          var apiToken = "{{.Token}}";
-          var theme = "{{.Theme}}";
-        </script>
-      </footer>
     </div>
+    <footer>
+      <div class="vim-info-container">
+        <div id="status-container">
+          <div id="vim-mode-status" class="vim-mode normal"></div>
+          <div id="error-message"></div>
+        </div>
+      </div>
+      <script>
+        var apiToken = "{{ .Token }}";
+        var theme = "{{ .Theme }}";
+      </script>
+    </footer>
   </body>
 </html>
