@@ -7,12 +7,20 @@
 
     <title>vimbin - a pastebin with vim motion</title>
 
-    <link rel="stylesheet" href="static/css/theme/catppuccin-colors.css" />
-    <link rel="stylesheet" href="static/css/theme/catppuccin.css" />
+    <link rel="stylesheet" href="static/css/catppuccin-colors.css" />
+    <link rel="stylesheet" href="static/css/catppucin.css" />
     <link rel="stylesheet" href="static/css/vimbin.css" />
+
+    <script>
+      window.apiToken = "{{ .Token }}";
+      var theme = "{{ .Theme }}";
+    </script>
   </head>
   <body>
-    <h2>{{.Title}}</h2>
+    <div class="title">
+      <h2>{{ .Title }}</h2>
+    </div>
+    <!-- button to copy the editor -->
     <div class="container">
       <form>
         <div id="editor"></div>
@@ -21,15 +29,9 @@
     </div>
     <footer>
       <div class="vim-info-container">
-        <div id="status-container">
-          <div id="vim-mode-status" class="vim-mode normal"></div>
-          <div id="error-message"></div>
-        </div>
+        <div id="vim-mode-status" class="vim-mode normal"></div>
+        <div id="status"></div>
       </div>
-      <script>
-        var apiToken = "{{ .Token }}";
-        var theme = "{{ .Theme }}";
-      </script>
     </footer>
   </body>
 </html>

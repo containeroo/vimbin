@@ -1,7 +1,13 @@
 import { initializeEditor } from "./editor-setup";
 import "./vim-commands";
 
-declare var apiToken: string;
+declare global {
+  interface Window {
+    apiToken: string;
+  }
+}
+
+export const apiToken = window.apiToken;
 
 async function getContent() {
   try {
@@ -43,6 +49,7 @@ async function getContent() {
 
 async function main() {
   await initializeEditor(await getContent());
+  setThemeBasedOnColorScheme();
 }
 
 main();

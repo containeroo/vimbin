@@ -8,26 +8,37 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
+.title {
+  margin-left: 20px;
+}
+
 .container {
-  margin: 20px;
-  height: calc(100vh - 100px);
-  position: relative; /* Keeps the container in a fixed position */
-  overflow: auto; /* Adds scroll if content overflows */
+  height: calc(100vh - 140px);
+  margin-top: 20px;
+  margin-left: 20px;
+  position: relative;
+  overflow: auto;
 }
 
 .CodeMirror {
+  margin-top: 5px;
+  margin-bottom: 5px;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
-  height: 100%; /* Full height of the container */
+  flex-grow: 1; /* Allow the CodeMirror editor to grow and fill the remaining space */
+  overflow: auto; /* Add scroll if content overflows */
+}
+
+.cm-scroller {
+  overflow: auto;
 }
 
 footer {
   font-size: 13px;
+  margin-top: 6px;
+  margin-left: 20px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  bottom: 0;
+  position: relative; /* Change to absolute */
   z-index: 10;
 }
 
@@ -39,7 +50,7 @@ footer {
 .vim-info-container {
   display: flex;
   align-items: center;
-  width: 150px;
+  width: auto; /* Remove fixed width */
 }
 
 .vim-mode {
@@ -78,7 +89,6 @@ footer {
 
 /* Status container */
 #status-container {
-  width: 200px;
   display: inline-block;
   white-space: nowrap;
 }
@@ -86,7 +96,7 @@ footer {
 #status {
   font-size: 12px;
   padding: 5px;
-  margin-right: 5px;
+  margin-left: 2px; /* Use margin-left to create space between elements */
   white-space: nowrap;
   display: inline-block;
 }

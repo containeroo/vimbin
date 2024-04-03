@@ -5,7 +5,7 @@ import {
   completionKeymap,
 } from "@codemirror/autocomplete";
 import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
-import { vim } from "@replit/codemirror-vim";
+import { vim, Vim } from "@replit/codemirror-vim";
 import {
   bracketMatching,
   defaultHighlightStyle,
@@ -31,6 +31,10 @@ import {
 } from "@codemirror/view";
 import { Extension } from "@codemirror/state";
 import { vimModeDisplay } from "./vim-mode-display";
+import { Compartment } from "@codemirror/state";
+import { catppuccinFrappe } from "./catppuccine-frappe";
+
+const themeConfig = new Compartment();
 
 export const lineNumbersRelative: Extension = [formatNumber()];
 
@@ -52,29 +56,41 @@ function formatNumber() {
   });
 }
 
+function createEditor() {
+  const targetElement = document.querySelector("#editor")!;
+  return new EditorView({
+    parent: targetElement,
+  });
+}
+
+export const editor = createEditor();
+
 export async function initializeEditor(initialContent: string) {
+  const editorView = editor;
+
   const state = EditorState.create({
     doc: initialContent,
     extensions: [
-      vimModeDisplay(),
-      vim(),
-      lineNumbersRelative,
-      highlightActiveLineGutter(),
-      highlightSpecialChars(),
-      history(),
-      foldGutter(),
-      drawSelection(),
-      dropCursor(),
       EditorState.allowMultipleSelections.of(true),
-      indentOnInput(),
-      syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
+      catppuccinFrappe,
+      autocompletion(),
       bracketMatching(),
       closeBrackets(),
-      autocompletion(),
-      rectangularSelection(),
       crosshairCursor(),
+      drawSelection(),
+      dropCursor(),
+      foldGutter(),
       highlightActiveLine(),
+      highlightActiveLineGutter(),
       highlightSelectionMatches(),
+      highlightSpecialChars(),
+      history(),
+      indentOnInput(),
+      lineNumbersRelative,
+      rectangularSelection(),
+      syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
+      vim(),
+      vimModeDisplay(),
       keymap.of([
         ...closeBracketsKeymap,
         ...defaultKeymap,
@@ -87,11 +103,8 @@ export async function initializeEditor(initialContent: string) {
     ],
   });
 
-  const targetElement = document.querySelector("#editor")!;
-  const editor = new EditorView({
-    parent: targetElement,
-    state: state,
-  });
+  editorView.setState(state);
 
-  editor.focus();
+  Vim.exitInsertMode((editorView as any).cm);
+  editorView.focus();
 }
