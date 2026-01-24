@@ -2,7 +2,7 @@ module vimbin
 
 go 1.23.0
 
-toolchain go1.25.5
+toolchain go1.25.6
 
 require (
 	github.com/gorilla/mux v1.8.1
